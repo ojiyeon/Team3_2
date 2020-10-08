@@ -41,27 +41,29 @@
 				// 글번호로 게시글 정보 가져옴
 				BoardBean board = boardDBBean.getBoard(comm_index, false);
 				
-				// 저장되어 있는 파일이 있을 경우, 디렉토리에서 삭제하도록 함
-				// 글번호로 찾은 정보에 있는 systemFileName 을 fileName에 저장
-				String fileName = board.getComm_systemFileName();
-				// 만약 fileName이 null 이 아니라면
-				if(fileName != null){
-					// 파일이 있는 폴더의 절대경로를 가져옴
-					String folder = request.getServletContext().getRealPath("/upload");
-					// 파일의 절대경로를 만들어줌
-					String filePath = folder + "/" + fileName;
-					
-					File file = new File(filePath);
-					if(file.exists()){
-						file.delete(); // 파일은 1개만 업로드 되기때문에 한번만 삭제해주면 됨
-					}
-				}
-			
+				
 				int re = boardDBBean.deleteBoard(comm_index, stu_pwd, board_pwd);	
 				
 				System.out.println("re >>" + re);
 				
 				if(re > 0){
+					
+					// 저장되어 있는 파일이 있을 경우, 디렉토리에서 삭제하도록 함
+					// 글번호로 찾은 정보에 있는 systemFileName 을 fileName에 저장
+					String fileName = board.getComm_systemFileName();
+					// 만약 fileName이 null 이 아니라면
+					if(fileName != null){
+						// 파일이 있는 폴더의 절대경로를 가져옴
+						String folder = request.getServletContext().getRealPath("/upload");
+						// 파일의 절대경로를 만들어줌
+						String filePath = folder + "/" + fileName;
+						
+						File file = new File(filePath);
+						if(file.exists()){
+							file.delete(); // 파일은 1개만 업로드 되기때문에 한번만 삭제해주면 됨
+						}
+					}
+				
 					if (comm_groupn == 1) {
 						out.print("<script>");
 						out.print("alert('정상적으로 삭제되었습니다.');");

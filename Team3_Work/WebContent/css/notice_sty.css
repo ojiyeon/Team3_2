@@ -8,24 +8,24 @@
   padding: 0 0 100px;
 }
 .notice > div {
-  width: 1180px;
-  margin: 0 auto;
+  margin: 0 auto; 
   padding: 55px 0;
 }
 
 li {
   list-style: none;
 }
-
-.notice article {
-  padding: 20px 0 0;
+/***************************Ãß°¡µÊ*****************************/
+div.temp {
+	margin-left: 80px; 
 }
+
 .notice article > div {
   float: left;
-  width: 500px;
+  width: 800px;
   background: #f2f0ed;
-  margin-right: 20px;
   position: relative;
+  
 }
 /* .notice article > div {
   float: left;
@@ -33,10 +33,10 @@ li {
 
 .notice article > div h2 {
   font-size: 24px;
-  color: #3d5b79;
+  color: #11264f;
   text-align: center;
-  height: 77px;
-  line-height: 77px;
+  height: 50px;
+  line-height: 50px;
   border-bottom: 1px solid #ffffff;
 }
 
@@ -48,7 +48,7 @@ li {
 }
 
 .notice article > div ul li a {
-  font-size: 16px;
+  font-size: 14px;
   color: #424241;
 }
 .notice article > div a p {
@@ -56,7 +56,7 @@ li {
   color: #979797;
 }
 .notice article > div ul li {
-  padding: 5px 0 15px;
+  padding: 10px 0;
   position: relative;
   border-bottom: 1px solid #ffffff;
 }
@@ -73,9 +73,10 @@ li {
   display: block;
   overflow: hidden;
   width: 400px;
-  height: 40px;
-  line-height: 40px;
+  height: 25px;
+  line-height: 25px;
   text-indent: 10px;
+  padding-left: 20px;
 }
 .notice article > div a p {
   position: absolute;

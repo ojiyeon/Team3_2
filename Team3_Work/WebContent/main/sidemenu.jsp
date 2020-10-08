@@ -46,7 +46,7 @@
 				<div class="logout_btn"><a href="../main/logOut.jsp" style="color: #fff;">logout</a></div>
 			<!-- ================== profile_wrap END  =============== ===-->
 			<ul class="sidemenu">
-				<li><a href="#" class="t"> <span class="icon"><i
+				<li><a class="t"> <span class="icon"><i
 							class="fas fa-address-card"></i></span> <span class="title"> 개인
 							정보 관리</span> <span class="arrow"><i class="fas fa-sort-down"></i></span>
 				</a>
@@ -54,14 +54,14 @@
 						<li><a href="../1/stu_Basic_Info.jsp">정보 조회</a></li>
 						
 					</ul></li>
-				<li><a href="#" class="t"> <span class="icon"><i
+				<li><a class="t"> <span class="icon"><i
 							class="fas fa-shapes"></i></span> <span class="title">성적 정보 관리 </span> <span
 						class="arrow"><i class="fas fa-sort-down"></i></span>
 				</a>
 					<ul class="sub_menu">
 						<li><a href="../1/stu_Score_Info.jsp">성적 조회</a></li>
 					</ul></li>
-				<li><a href="#" class="t"> <span class="icon"><i
+				<li><a class="t"> <span class="icon"><i
 							class="fas fa-book-reader"></i></span> <span class="title"> 수강 정보
 							관리</span> <span class="arrow"><i class="fas fa-sort-down"></i></span>
 				</a>

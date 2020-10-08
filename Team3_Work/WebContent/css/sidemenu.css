@@ -11,19 +11,20 @@
 }
 
 .wrapper {
-  width: 250px;
-  height: 550px;
+  width: 300px;
+  height: auto;
   background: #ffffff;
-  margin: auto 20px; /*위아래, 오른쪽 왼쪽 여백*/
-  border: #223322 solid 1px;
-  border-radius: 7px;
-  box-shadow: 2px 2px 3px rgba(255, 255, 255, 0.25);
+  /* margin: auto 20px; 위아래, 오른쪽 왼쪽 여백 */
+  
   float: left;
   color: #555555;
+  margin-left: auto;
+  margin-top: -100px;
+  padding-top: 100px;
 }
 
 .wrapper .navbar {
-  position: relative;
+  position: relative; 
  
 }
 
@@ -64,6 +65,11 @@
   color: #8c9ba7;
   position: relative;
   text-align: center;
+}
+.wrapper .navbar .sidemenu li > a:hover{
+	cursor: pointer;
+	color: #1790d4;
+	
 }
 
 .wrapper .navbar .sidemenu li > a span {

@@ -1,76 +1,229 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page import="java.sql.Timestamp"%>
+<%@page import="board.*"%>
+<%@page import="java.util.ArrayList"%>
+<jsp:useBean id="board" class="board.BoardBean"></jsp:useBean>
+<jsp:setProperty property="*" name="board" />
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Document</title>
-<!-- <link rel="stylesheet" href="../css/notice_sty.css" type="text/css"/> -->
+
 <link href="../css/notice_sty.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="../3/script.js" charset="utf-8"></script>
 <style>
 section {
 	height: 80vh;
 	display: block;
 }
-
 footer {
 	clear: both;
 	display: block;
 }
-
 footer {
 	text-align: center;
+}
+/* 달력 */
+#cal {
+   width: 20%;
+   height: 50%;
+   margin: auto 30px;
+   float: left;
+}
+
+table {
+   width: 100%;
+   border-collapse: collapse;
+}
+
+.cth {
+   width: 40px;
+   height: 40px;
+   color: white;
+   background-color: #11264f;
+   text-align: center;
+}
+
+.ctd {
+   width: 40px;
+   height: 40px;
+   text-align: center;
+}
+
+.calendar {
+   width: 280px;
+}
+
+#month {
+   padding: 5px;
+   background-color: #11264f;
+   color: white;
+   font-weight: bold;
+   height: 40px;
+   line-height: 40px;
+   font-size: 30px;
+   padding-left: 10px;
+   margin-bottom: 0;
+}
+
+.today {
+   background-color: #11264f;
+   border-radius: 50px;
+   color: white;
+   font-weight: bold;
 }
 </style>
 </head>
 <body>
-	<jsp:include page="../main/menu.jsp"></jsp:include>
-	<jsp:include page="../main/sidemenu.jsp"></jsp:include>
+<%
+	BoardDBBean db = new BoardDBBean();
+
+	String search_col = request.getParameter("select_col");
+	String search = request.getParameter("search");
+
+	ArrayList<BoardBean> noticeList = new ArrayList<BoardBean>();
+	ArrayList<BoardBean> boardList = new ArrayList<BoardBean>();
+
+	String pageNUM = request.getParameter("pageNUM");
+	if (pageNUM == null) {
+		pageNUM = "1";
+	}
+
+	noticeList = db.getListBoard(search_col, search, 4, pageNUM);
+	boardList = db.getListBoard(search_col, search, 1, pageNUM);
+
+	String stu_name = (String) session.getAttribute("stu_name");
+
+	String comm_title, comm_date2;
+
+	Timestamp b_date;
+
+	int comm_index = 0;
+	int comm_groupn = 0;
+	int comm_step = 0;
+	%>
+
+
+
 	<section class="notice">
 		<div class="clear">
 			<article>
-				<div class="temp">
 					<!--1-->
+				<div class="temp">
 					<h2>학사 공지</h2>
-					<ul>
-						<li><a class="a" href="#a"><span>수강신청 하기 전 비밀번호 설정에 관한 자세한 사항을 확인하세요</span>
-								<p>2020.09.06</p></a></li>
-						<li><a class="a" href="#a">휴/복학 신청 안내 공지사항을 확인해주세요
-								<p>2020.09.06</p>
-						</a></li>
-						<li><a class="a" href="#a"> 2020년 2학기 유고 결석에 따른 출석 인정 안내 사항
-								<p>2020.09.06</p>
-						</a></li>
-						<li><a class="a" href="#a">학업증진 프로그램 참가신청에 대한 자세한 사항
-								<p>2020.09.06</p>
-						</a></li>
-					</ul>
-					<a class="a1" href="#a">더보기</a>
-				</div>
-				<div div class="temp">
-					<!--2-->
-					<h2>취업 공지</h2>
-					<ul>
-						<li><a class="a" href="#a">[부산도로교통공사] 2020년 상반기 신입 공채
-								<p>2020.09.10</p>
-						</a></li>
-						<li><a class="a" href="#a"> <span> 2020년 취업에 성공하고 싶다면?!! 공백기를 대체할 수 있는 면접 Skill </span>
-								<p>2020.09.10</p></a></li>
-						<li><a class="a" href="#a"> 온/오프라인 면접, 자소서 클리닉 [4학년 대상]
-								<p>2020.09.10</p>
-						</a></li>
-					</ul>
-					<a class="a1" href="#a">더보기</a>
-				</div>
-			</article>
-		</div>
 
+					<%
+						for (int i = 0; i < noticeList.size(); i++) { // 5개까지만(공지는 답댓 기능이 없어서 단순 for문으로 처리)
+							
+						board = noticeList.get(i);
+						comm_index = board.getComm_index();
+						comm_groupn = board.getComm_groupn();
+						comm_title = board.getComm_title();
+						comm_date2 = board.getDate2();
+
+						if (comm_groupn == 4) {
+							
+					%>
+					<ul>
+						<li>
+						<a class="a" href="../3/comm_Show.jsp?comm_index=<%=comm_index%>&pageNUM=<%=pageNUM%>"><span> <%=comm_title%></span>
+								<p><%=comm_date2%></p>
+						</a>
+					</li>
+
+				<%
+					}
+				}
+				%>
+					</ul>
+					<a class="a1" href="../2/stu_Notice.jsp">더보기</a>
+				</div>
+</article>
+
+					<!--2-->
+	<div id="cal">
+      <div class="calendar">
+         <h3 id="month"></h3>
+         <table>
+            <thead>
+               <tr>
+                  <th class="cth">일</th>
+                  <th class="cth">월</th>
+                  <th class="cth">화</th>
+                  <th class="cth">수</th>
+                  <th class="cth">목</th>
+                  <th class="cth">금</th>
+                  <th class="cth">토</th>
+               </tr>
+            </thead>
+            <tbody id="calendar-body"></tbody>
+         </table>
+      </div>
+      <!-- calendar END -->
+   </div>	
+   			
+		</div>
 	</section>
-	<footer>
-		<jsp:include page="../main/footer.jsp"></jsp:include>
-	</footer>
 
 </body>
+<script>
+   monthAndYear = document.getElementById("month");
+   showCalendar();
+
+   function showCalendar() {
+      let today = new Date();
+      let year = today.getFullYear(); // 년도
+      let month = today.getMonth(); // 월
+      let firstDay = new Date(year, month).getDay();
+
+      tbl = document.getElementById("calendar-body");
+
+      tbl.innerHTML = "";
+
+      // 달력위에 년도, 월 표시
+      monthAndYear.innerHTML = year + "." + (month + 1);
+
+      // 달력 테이블 생성
+      let date = 1;
+      for (let i = 0; i < 6; i++) {
+         let row = document.createElement("tr");
+
+         for (let j = 0; j < 7; j++) {
+            if (i === 0 && j < firstDay) {
+               cell = document.createElement("td");
+               cellText = document.createTextNode("");
+               cell.classList.add("ctd");
+               cell.appendChild(cellText);
+               row.appendChild(cell);
+            } else if (date > daysInMonth(month, year)) {
+               break;
+            } else {
+               cell = document.createElement("td");
+               cellText = document.createTextNode(date);
+               if (date == 10) {
+                  cell.style.color = "red";
+                  cell.style.fontWeight = "bold";
+               }
+               if (date === today.getDate()
+                     && year === today.getFullYear()
+                     && month === today.getMonth()) {
+                  cell.classList.add("today");
+               }
+               cell.classList.add("ctd");
+               cell.appendChild(cellText);
+               row.appendChild(cell);
+               date++;
+            }
+         }
+         tbl.appendChild(row);
+      }
+   }
+   function daysInMonth(iMonth, iYear) {
+      return 32 - new Date(iYear, iMonth, 32).getDate();
+   }
+</script>
 </html>
 
 
