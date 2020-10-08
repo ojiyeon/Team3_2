@@ -14,7 +14,6 @@
 <link rel="stylesheet" type="text/css" href="../css/login.css" />
 <script language="JavaScript" src="login_sc.js" charset="utf-8"></script>
 </head>
-
 <body>
 	<div class="container-fluid conya">
 		<div class="side-left">
@@ -54,11 +53,6 @@
 					<a href="or login with"></a>
 				</div>
 			</form>
-
-
-		</div>
-		<div class="copyco">
-			<p>Copyrigh 2019 @ smarteyeapps.com</p>
 		</div>
 	</div>
 </body>
