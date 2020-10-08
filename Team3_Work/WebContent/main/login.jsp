@@ -1,46 +1,65 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <%@ page import="student.*"%>
 
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
+
 <head>
-<meta charset="EUC-KR">
-<title>Insert title here</title>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>BIT</title>
+
+<link rel="shortcut icon" href="../css/mainImg.jpg">
+<link rel="stylesheet" type="text/css" href="../css/login.css" />
 <script language="JavaScript" src="login_sc.js" charset="utf-8"></script>
 </head>
+
 <body>
-	<table border="1" align="center">
-		<form method="post" name="login_frm" action="loginOk.jsp">
-			<tr>
-				<td align="center" colspan="2">
-					<h2>로그인 페이지</h2>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center">
+	<div class="container-fluid conya">
+		<div class="side-left">
+			
+		</div>
+		<div class="side-right">
+			<h1 style="margin-bottom:30px;">BIT 시스템</h1>
+			<form method="post" name="login_frm" action="loginOk.jsp">
+				<div>
 					<input type="radio" name="class" value="s" checked>학 생 &nbsp;&nbsp;&nbsp;&nbsp;
-					 <input type="radio" name="class" value="p">교 직 원
-				</td>
-			</tr>
-			<tr height="30">
-				<td width="100" align="center">ID</td>
-				<td>
-					<input type="text" name="user_id">
-				</td>
-			</tr>
-			<tr height="30">
-				<td width="100" align="center">PASSWORD</td>
-				<td>
-					<input type="password" name="user_pwd">
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center">
-					<input type="button" value="LOGIN" onClick="check_ok()"> &nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="button" value="ID/PW찾기" onClick="javascript:window.location='id_Pwd_find.jsp'">
-				</td>  
-			</tr>
-		</form>
-	</table>
+					<input type="radio" name="class" value="p">교 직 원
+				</div>
+	
+				<div class="form-row">
+					<label for="">ID</label> <input name="user_id" type="text"
+						placeholder="ID"
+						class="form-control form-control-sm">
+				</div>
+	
+				<div class="form-row">
+					<label for="">Password</label> <input name="user_pwd" type="password"
+						placeholder="Password" class="form-control form-control-sm">
+				</div>
+	
+				<div class="form-row row skjh">
+					<div class="col-7 left no-padding">
+						
+					</div>
+					<div class="col-5">
+						<span> <a href="" onClick="javascript:window.location='id_Pwd_find.jsp'">비밀번호 찾기</a></span>
+					</div>
+				</div>
+				<div class="form-row dfr">
+					<button class="btn btn-sm btn-success" onClick="check_ok()">로그인</button>
+				</div>
+				<div class="ord-v">
+					<a href="or login with"></a>
+				</div>
+			</form>
+
+
+		</div>
+		<div class="copyco">
+			<p>Copyrigh 2019 @ smarteyeapps.com</p>
+		</div>
+	</div>
 </body>
 </html>
