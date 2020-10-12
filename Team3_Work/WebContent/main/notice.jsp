@@ -33,6 +33,9 @@ footer {
 footer {
    text-align: center;
 }
+.blank {
+	height: 50px;
+}
 #contents{
    padding-left: 300px;
    border-left: #dddddd solid 1px; 
@@ -167,7 +170,7 @@ table {
 
 		
          <!--2-->
-         <div class="table">
+         
          <div id="cal">
             <div class="calendar">
                <h3 id="month"></h3>
@@ -185,10 +188,12 @@ table {
                   </thead>
                   <tbody id="calendar-body"></tbody>
                </table>
-            </div>
             <!-- calendar END -->
          
-        <div class="table">
+         <div class="blank"></div>
+         
+         
+         <div class="calendar">
 			<table>
          		<tr calss="trbody">
          <%
@@ -242,7 +247,7 @@ table {
 					}
 				%>
         	 </table>
-         </div>
+        	 </div>
          
          
          </div>

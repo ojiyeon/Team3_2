@@ -8,7 +8,11 @@
 <head>
 <meta charset="EUC-KR">
 <title>학생정보</title>
-
+<style>
+.blank {
+	height: 50px;
+}
+</style>
 <link rel="stylesheet" href="../css/1_1.css" type="text/css" />
 <script type="text/javascript"
 	src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
@@ -36,7 +40,7 @@
 
 			<div id="tab-1" class="tab-content current">
 				<div class="table">
-					<table cellpadding="10" cellspacing="3" width="800" height="150"
+					<table cellpadding="10" cellspacing="3" width="800" height="auto"
 						align="center">
 
 
@@ -105,13 +109,13 @@
 						</tr>
 					</table>
 				</div>
-			</div>
-		</div>
+<!-- 			</div>
+		</div> -->
 
-
+		<div class="blank"></div>
 
 		<!-- 수정가능 항목들 -->
-		<div class="container">
+		<!-- <div class="container"> -->
 
 			<ul class="tabs">
 				<li class="tab-link current" data-tab="tab-1">기본 정보</li>
@@ -119,7 +123,7 @@
 
 			<div id="tab-1" class="tab-content current">
 				<div class="table">
-					<table cellpadding="10" cellspacing="3" width="800" height="150"
+					<table cellpadding="10" cellspacing="3" width="800" height="auto"
 						align="center">
 						<tr>
 							<td align="center" class="menu">연락처</td>
@@ -150,11 +154,11 @@
 						</tr>
 					</table>
 				</div>
+			</div>
+			
 				<div class="mbutton">
 					<input type="button" class="button" value="정보수정"
 						onclick="location.href='stu_Update_Info.jsp'" />
-
-				</div>
 			</div>
 		</div>
 	</div>

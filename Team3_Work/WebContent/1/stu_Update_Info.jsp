@@ -7,6 +7,11 @@
 <head>
 <meta charset="EUC-KR">
 <title>기본 정보 수정</title>
+<style>
+.blank {
+	height: 50px;
+}
+</style>
 <link rel="stylesheet" href="../css/1_1.css" type="text/css" />
 <script type="text/javascript" src="stu_update_check.js" charset="utf-8"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js?autoload=false"></script> <!-- 우편검색 api -->
@@ -33,7 +38,7 @@
 
 			<div id="tab-1" class="tab-content current">
 				<div class="table">
-					<table cellpadding="10" cellspacing="3" width="800" height="200"
+					<table cellpadding="10" cellspacing="3" width="800" height="auto"
 						align="center">
 						<form method="post" action="stu_Update_Ok.jsp" name="stu_frm" enctype="multipart/form-data">
 							<tr>
@@ -99,12 +104,13 @@
 							</tr>
 					</table>
 				</div>
-			</div>
-		</div>
-
+<!-- 			</div>
+		</div> -->
+		
+		<div class="blank"></div>
 
 		<!-- 수정 가능한 항목들 -->
-		<div class="container">
+		<!-- <div class="container"> -->
 
 			<ul class="tabs">
 				<li class="tab-link current" data-tab="tab-1">기본 정보</li>
@@ -112,7 +118,7 @@
 
 			<div id="tab-1" class="tab-content current">
 				<div class="table">
-					<table cellpadding="10" cellspacing="3" width="800" height="150"
+					<table cellpadding="10" cellspacing="3" width="800" height="auto"
 						align="center">
 						<tr>
 							<td align="center" class="menu">변경 비밀번호</td>
@@ -166,12 +172,15 @@
 						</form>
 					</table>
 				</div>
-				<div class="mbutton">
-					<td><input type="button" value="수정하기"
-						onClick="update_check_ok()"> <input type="button"
-						value="수정취소" onclick="javascript:history.back(-1)"></td>
-				</div>
 			</div>
+			
+				<div class="mbutton">
+					<input type="button" class="button" value="수정하기"
+						onClick="update_check_ok()"> &nbsp;&nbsp;
+						<input type="button" class="button"
+						value="수정취소" onclick="javascript:history.back(-1)">
+						
+				</div>
 		</div>
 	</div>
 <script type="text/javascript">
