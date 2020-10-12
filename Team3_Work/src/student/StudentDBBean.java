@@ -408,6 +408,7 @@ public class StudentDBBean {
 			
 			pstmt=con.prepareStatement(sql);
 			pstmt.setInt(1, year);
+			pstmt.setInt(2, Calendar.getInstance().get(Calendar.MONTH)+1);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
