@@ -1,3 +1,8 @@
+<%@page import="java.util.Calendar"%>
+<%@page import="student.StudentDBBean"%>
+<%@page import="schedule.ScheduleBean"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="board.*"%>
@@ -12,18 +17,25 @@
 <title>Document</title>
 
 <link href="../css/notice_sty.css" rel="stylesheet" type="text/css">
+<link href="../css/menu.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="../3/script.js" charset="utf-8"></script>
 <style>
 section {
-	height: 80vh;
-	display: block;
+   height: 80vh;
+   display: block;
 }
+
 footer {
-	clear: both;
-	display: block;
+   clear: both;
+   display: block;
 }
+
 footer {
-	text-align: center;
+   text-align: center;
+}
+#contents{
+   padding-left: 300px;
+   border-left: #dddddd solid 1px; 
 }
 /* 달력 */
 #cal {
@@ -77,155 +89,234 @@ table {
 </style>
 </head>
 <body>
-<%
-	BoardDBBean db = new BoardDBBean();
+   <%
+      BoardDBBean db = new BoardDBBean();
 
-	String search_col = request.getParameter("select_col");
-	String search = request.getParameter("search");
+   String search_col = request.getParameter("select_col");
+   String search = request.getParameter("search");
 
-	ArrayList<BoardBean> noticeList = new ArrayList<BoardBean>();
-	ArrayList<BoardBean> boardList = new ArrayList<BoardBean>();
+   ArrayList<BoardBean> noticeList = new ArrayList<BoardBean>();
 
-	String pageNUM = request.getParameter("pageNUM");
-	if (pageNUM == null) {
-		pageNUM = "1";
-	}
+   String pageNUM = request.getParameter("pageNUM");
+   if (pageNUM == null) {
+      pageNUM = "1";
+   }
 
-	noticeList = db.getListBoard(search_col, search, 4, pageNUM);
-	boardList = db.getListBoard(search_col, search, 1, pageNUM);
+   noticeList = db.getListBoard(search_col, search, 4, pageNUM);
 
-	String stu_name = (String) session.getAttribute("stu_name");
+   String stu_name = (String) session.getAttribute("stu_name");
 
-	String comm_title, comm_date2;
+   String comm_title, comm_date2;
 
-	Timestamp b_date;
+   Timestamp comm_date;
 
-	int comm_index = 0;
-	int comm_groupn = 0;
-	int comm_step = 0;
-	%>
+   int comm_index = 0;
+   int comm_groupn = 0;
+   int comm_step = 0;
+   %>
 
 
+<div id="content">
+   <section class="notice">
+      <div class="clear">
+         <article>
+            <!--1-->
+            <div class="temp">
+               <h2>학사 공지</h2>
 
-	<section class="notice">
-		<div class="clear">
-			<article>
-					<!--1-->
-				<div class="temp">
-					<h2>학사 공지</h2>
+               <%
+                  for (int i = 0; i < 8; i++) { // 5개까지만(공지는 답댓 기능이 없어서 단순 for문으로 처리)
 
-					<%
-						for (int i = 0; i < noticeList.size(); i++) { // 5개까지만(공지는 답댓 기능이 없어서 단순 for문으로 처리)
-							
-						board = noticeList.get(i);
-						comm_index = board.getComm_index();
-						comm_groupn = board.getComm_groupn();
-						comm_title = board.getComm_title();
-						comm_date2 = board.getDate2();
+                  board = noticeList.get(i);
+                  comm_index = board.getComm_index();
+                  comm_groupn = board.getComm_groupn();
+                  comm_title = board.getComm_title();
+                  comm_date2 = board.getDate2();
+                  comm_date = board.getComm_date();
 
-						if (comm_groupn == 4) {
-							
-					%>
-					<ul>
-						<li>
-						<a class="a" href="../3/comm_Show.jsp?comm_index=<%=comm_index%>&pageNUM=<%=pageNUM%>"><span> <%=comm_title%></span>
-								<p><%=comm_date2%></p>
-						</a>
-					</li>
+                  SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+                  String inputDate = sf.format(comm_date);
+                  String now = sf.format(new Date());
 
+                  if (comm_groupn == 4) {
+               %>
+               <ul>
+                  <li>
+                  <a class="a" href="../3/comm_Show.jsp?comm_index=<%=comm_index%>&pageNUM=<%=pageNUM%>">
+                  <span> <%=comm_title%> 
+                  <%
+                      if (inputDate.equals(now)) {
+                   %>
+                    &nbsp;&nbsp;<img alt="" src="../css/new.png" height="22" width="25"> 
+                   <%
+                      }
+                   %>
+                     </span>
+                        <p><%=comm_date2%></p> 
+                     </a>
+                     </li>
+                  <%
+                     }
+                  }
+                  %>
+               </ul>
+               <a class="a1" href="../2/stu_Notice.jsp">더보기</a>
+            </div>
+         </article>
+
+
+		
+         <!--2-->
+         <div class="table">
+         <div id="cal">
+            <div class="calendar">
+               <h3 id="month"></h3>
+               <table>
+                  <thead>
+                     <tr>
+                        <th class="cth">일</th>
+                        <th class="cth">월</th>
+                        <th class="cth">화</th>
+                        <th class="cth">수</th>
+                        <th class="cth">목</th>
+                        <th class="cth">금</th>
+                        <th class="cth">토</th>
+                     </tr>
+                  </thead>
+                  <tbody id="calendar-body"></tbody>
+               </table>
+            </div>
+            <!-- calendar END -->
+         
+        <div class="table">
+			<table>
+         		<tr calss="trbody">
+         <%
+			StudentDBBean student = StudentDBBean.getInstance();
+			ArrayList<ScheduleBean> viewlist = null;
+			
+			Calendar cal = Calendar.getInstance();
+			int year = cal.get(Calendar.YEAR);
+			viewlist = student.ScheduleView(year);
+			
+			System.out.println(viewlist.size());
+			
+			int month = cal.get(Calendar.MONTH)+1;
+	
+			for (int i = 0; i < viewlist.size(); i++) {
+				ScheduleBean view2 = viewlist.get(i);
+	
+				int start_year = view2.getShce_startyear();
+				int start_month = view2.getShce_startmonth();
+				int start_day = view2.getShce_startday();
+				int end_month = view2.getShce_endmonth();
+				int end_day = view2.getShce_endday();
+				int holiday = view2.getShce_holiday();
+				String content = view2.getSche_content();
+				
+				if(month == end_month && month == start_month){
+					if(start_month == end_month && start_day == end_day){
+				%>
+					<tr calss="trbody">
+					<td class="pdate"><%=start_month%>&nbsp;.<%=start_day %></td>
+					<td class="pdesc"><%=content%></td>
+				</tr>
+				
 				<%
+					
+					}else{
+						%>
+						<tr calss="trbody">
+						
+						<td class="pdate">
+							<%=start_month%>&nbsp;.<%=start_day %> ~
+							<%=end_month%>&nbsp;.<%=end_day %>
+						</td>
+						<td class="pdesc"><%=content%></td>
+					
+					</tr>
+					<%
 					}
 				}
+					
+					}
 				%>
-					</ul>
-					<a class="a1" href="../2/stu_Notice.jsp">더보기</a>
-				</div>
-</article>
-
-					<!--2-->
-	<div id="cal">
-      <div class="calendar">
-         <h3 id="month"></h3>
-         <table>
-            <thead>
-               <tr>
-                  <th class="cth">일</th>
-                  <th class="cth">월</th>
-                  <th class="cth">화</th>
-                  <th class="cth">수</th>
-                  <th class="cth">목</th>
-                  <th class="cth">금</th>
-                  <th class="cth">토</th>
-               </tr>
-            </thead>
-            <tbody id="calendar-body"></tbody>
-         </table>
+        	 </table>
+         </div>
+         
+         
+         </div>
+         <!-- cal END -->
       </div>
-      <!-- calendar END -->
-   </div>	
-   			
-		</div>
-	</section>
-
+      <!-- clear END -->
+   </section>
+</div>
 </body>
 <script>
-   monthAndYear = document.getElementById("month");
-   showCalendar();
+    monthAndYear = document.getElementById("month");
+    showCalendar();
 
-   function showCalendar() {
-      let today = new Date();
-      let year = today.getFullYear(); // 년도
-      let month = today.getMonth(); // 월
-      let firstDay = new Date(year, month).getDay();
+    function showCalendar() {
+        let today = new Date();
+        let year = today.getFullYear(); // 년도
+        let month = today.getMonth(); // 월
+        let firstDay = new Date(year, month).getDay();
 
-      tbl = document.getElementById("calendar-body");
+        tbl = document.getElementById("calendar-body");
 
-      tbl.innerHTML = "";
+        tbl.innerHTML = "";
 
-      // 달력위에 년도, 월 표시
-      monthAndYear.innerHTML = year + "." + (month + 1);
+        // 달력위에 년도, 월 표시
+        monthAndYear.innerHTML = year + "." + (month + 1);
 
-      // 달력 테이블 생성
-      let date = 1;
-      for (let i = 0; i < 6; i++) {
-         let row = document.createElement("tr");
+        // 달력 테이블 생성
+        let date = 1;
+        for (let i = 0; i < 6; i++) {
+            let row = document.createElement("tr");
 
-         for (let j = 0; j < 7; j++) {
-            if (i === 0 && j < firstDay) {
-               cell = document.createElement("td");
-               cellText = document.createTextNode("");
-               cell.classList.add("ctd");
-               cell.appendChild(cellText);
-               row.appendChild(cell);
-            } else if (date > daysInMonth(month, year)) {
-               break;
-            } else {
-               cell = document.createElement("td");
-               cellText = document.createTextNode(date);
-               if (date == 10) {
-                  cell.style.color = "red";
-                  cell.style.fontWeight = "bold";
-               }
-               if (date === today.getDate()
-                     && year === today.getFullYear()
-                     && month === today.getMonth()) {
-                  cell.classList.add("today");
-               }
-               cell.classList.add("ctd");
-               cell.appendChild(cellText);
-               row.appendChild(cell);
-               date++;
+            for (let j = 0; j < 7; j++) {
+                if (i === 0 && j < firstDay) {
+                    cell = document.createElement("td");
+                    cellText = document.createTextNode("");
+                    cell.classList.add("ctd");
+                    cell.appendChild(cellText);
+                    row.appendChild(cell);
+                } else if (date > daysInMonth(month, year)) {
+                    break;
+                } else {
+                	  cell = document.createElement("td");
+                      cellText = document.createTextNode(date);
+                      <%for(int i=0; i < viewlist.size(); i++){%>
+                      if (date >= <%=viewlist.get(i).getShce_startday() %> && date <= <%=viewlist.get(i).getShce_endday() %>) {
+                         <%if(viewlist.get(i).getShce_holiday() == 1){%>
+                    	  cell.style.color = "red";
+                    	  <%}else{%>
+                    	  cell.style.color = "blue";
+                    	  <%}%>
+                         cell.style.fontWeight = "bold";
+                      }
+                   <%}%>
+
+                  if (date === today.getDate()
+                        && year === today.getFullYear()
+                        && month === today.getMonth()) {
+                        cell.classList.add("today");
+                    }
+                    cell.classList.add("ctd");
+                    cell.appendChild(cellText);
+                    row.appendChild(cell);
+                    date++;
+                }
             }
-         }
-         tbl.appendChild(row);
-      }
-   }
-   function daysInMonth(iMonth, iYear) {
-      return 32 - new Date(iYear, iMonth, 32).getDate();
-   }
+            tbl.appendChild(row);
+        }
+    }
+    
+    function daysInMonth(iMonth, iYear) {
+        return 32 - new Date(iYear, iMonth, 32).getDate();
+    }
 </script>
 </html>
-
 
 
 

@@ -404,7 +404,7 @@ public class StudentDBBean {
 		
 		try {
 			con=getConnection();
-			sql="SELECT * FROM SCHEDULE WHERE SCHE_STARTYEAR=? ORDER BY SCHE_STARTMONTH, SCHE_STARTDAY";
+			sql="SELECT * FROM SCHEDULE WHERE SCHE_STARTYEAR=? AND SCHE_STARTMONTH =? ORDER BY SCHE_STARTMONTH, SCHE_STARTDAY";
 			
 			pstmt=con.prepareStatement(sql);
 			pstmt.setInt(1, year);
