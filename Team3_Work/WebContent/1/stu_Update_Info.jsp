@@ -162,6 +162,7 @@
 								value="<%=stu_b.getStu_email().substring(0, idx)%>"> @
 								 <!--get으로 email값 가져와서 첫번째 숫자부터 @위치-1값에 해당 데이터 추출-->
 								<select name="mail2" id="mail2">
+									<option selected><%=stu_b.getStu_email().substring(idx+1)%></option>
 									<option value="naver.com">naver.com</option>
 									<option value="gmail.com">gmail.com</option>
 									<option value="daum.com">daum.com</option>

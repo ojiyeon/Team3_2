@@ -1,4 +1,5 @@
 function update_check_ok(){
+	
 	if(document.stu_frm.stu_pwd.value.length==0){
 		alert("변경할 패스워드를 입력해주세요.");
 		stu_frm.stu_pwd.focus();
