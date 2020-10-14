@@ -10,6 +10,7 @@
 <head>
 <meta charset="EUC-KR">
 <title>글쓰기</title>
+  	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <link rel="stylesheet" href="../css/1_1.css" type="text/css" />
 <script type="text/javascript" src="../3/script.js" charset="utf-8"></script>
 
@@ -113,11 +114,16 @@
 							<tr height="40">
 								<td class="file">
 									<img alt="파일 아이콘" src="../css/file_icon.png" height="30">&nbsp;&nbsp;
-									<input type="file" id="file" name="comm_file" />
+									<input type="file" id="file" name="uploads" multiple/>
 								</td>
 							</tr>
 						</table>
+					<div id="selectedFileListWrap" class="table">
+	           			 <table id="selectedFileList" class="table table-bordered">
+	           			</table>
 					</div>
+					</div>
+							
 
 					<!-- 글쓰기 버튼 -->
 					<p class="mbutton">
@@ -134,4 +140,27 @@
 	</div>
 	<!-- <div id="contents"> END -->
 </body>
+<script>
+$("#selectedFileListWrap").hide();
+$(document).ready(function(){
+    $('input[type="file"]').change(function(e){
+    	$("#selectedFileListWrap").show();
+    	const input = document.querySelector('#file');
+    	const selectedFiles = input.files;
+		var cnt = 1;
+		var Parent = document.getElementById("selectedFileList");
+		while(Parent.hasChildNodes()){
+			Parent.removeChild(Parent.firstChild);		
+		}
+
+    	for(const file of selectedFiles) {
+    		var tableData = document.getElementById("selectedFileList");
+    		var row = tableData.insertRow(tableData.rows.length);
+    		var cell = row.insertCell(0);
+        	cell.innerHTML = "첨부파일 " + cnt + " <input type='text' readonly value='"+file.name+"'>";
+       		cnt++;
+    	}
+    });
+});
+</script>
 </html>

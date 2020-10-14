@@ -14,17 +14,17 @@ public class BoardBean {
 	private int comm_hits;
 	private String date2;
 	private int comm_stu_id;
-	private int comm_ref = 0; // �� �׷� ��ȣ �÷�
-	private int comm_step = 0; // �� ��ġ
-	private int comm_level = 0; // �亯 ����
+	private int comm_ref = 0; // 占쏙옙 占쌓뤄옙 占쏙옙호 占시뤄옙
+	private int comm_step = 0; // 占쏙옙 占쏙옙치
+	private int comm_level = 0; // 占썰변 占쏙옙占쏙옙
 	private String comm_originFileName;
 	private String comm_systemFileName;
 	
-	public static int pageSize = 10; // �� �������� ��µ� �Խù� ����
-	public static int pagecount = 1; // ������ ����
-	public static int pageNUM = 1; // ���� ������
+	public static int pageSize = 10; // 占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙쨉占� 占쌉시뱄옙 占쏙옙占쏙옙
+	public static int pagecount = 1; // 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙
+	public static int pageNUM = 1; // 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙
 	
-	// ����¡ ó��
+	// 占쏙옙占쏙옙징 처占쏙옙
 	public static String pageNumber(int comm_groupn, int limit) {
 		String str = "";
 		int temp = (pageNUM - 1) % limit;
@@ -32,7 +32,7 @@ public class BoardBean {
 
 		if (comm_groupn == 1) {
 			if ((startPage - limit) > 0) {
-				str += "<a href='comm_Freeboard.jsp?pageNUM=" + (startPage - 1) + "'>[����]</a>&nbsp;&nbsp;";
+				str += "<a href='comm_Freeboard.jsp?pageNUM=" + (startPage - 1) + "'>[占쏙옙占쏙옙]</a>&nbsp;&nbsp;";
 			}
 			for (int i = startPage; i < (startPage + limit); i++) {
 				if (i == pageNUM) {
@@ -44,11 +44,11 @@ public class BoardBean {
 					break;
 			}
 			if ((startPage + limit) <= pagecount) {
-				str += "<a href='comm_Freeboard.jsp?pageNUM=" + (startPage + limit) + "'>[����]</a>&nbsp;&nbsp;";
+				str += "<a href='comm_Freeboard.jsp?pageNUM=" + (startPage + limit) + "'>[占쏙옙占쏙옙]</a>&nbsp;&nbsp;";
 			}
 		}else if (comm_groupn == 2 || comm_groupn == 3) {
 			if ((startPage - limit) > 0) {
-				str += "<a href='comm_Q_And_A.jsp?pageNUM=" + (startPage - 1) + "'>[����]</a>&nbsp;&nbsp;";
+				str += "<a href='comm_Q_And_A.jsp?pageNUM=" + (startPage - 1) + "'>[占쏙옙占쏙옙]</a>&nbsp;&nbsp;";
 			}
 			for (int i = startPage; i < (startPage + limit); i++) {
 				if (i == pageNUM) {
@@ -60,11 +60,11 @@ public class BoardBean {
 					break;
 			}
 			if ((startPage + limit) <= pagecount) {
-				str += "<a href='comm_Q_And_A.jsp?pageNUM=" + (startPage + limit) + "'>[����]</a>&nbsp;&nbsp;";
+				str += "<a href='comm_Q_And_A.jsp?pageNUM=" + (startPage + limit) + "'>[占쏙옙占쏙옙]</a>&nbsp;&nbsp;";
 			}
 		}else if (comm_groupn == 4) {
 			if ((startPage - limit) > 0) {
-				str += "<a href='stu_Notice.jsp?pageNUM=" + (startPage - 1) + "'>[����]</a>&nbsp;&nbsp;";
+				str += "<a href='stu_Notice.jsp?pageNUM=" + (startPage - 1) + "'>[占쏙옙占쏙옙]</a>&nbsp;&nbsp;";
 			}
 			for (int i = startPage; i < (startPage + limit); i++) {
 				if (i == pageNUM) {
@@ -76,7 +76,7 @@ public class BoardBean {
 					break;
 			}
 			if ((startPage + limit) <= pagecount) {
-				str += "<a href='stu_Notice.jsp?pageNUM=" + (startPage + limit) + "'>[����]</a>&nbsp;&nbsp;";
+				str += "<a href='stu_Notice.jsp?pageNUM=" + (startPage + limit) + "'>[占쏙옙占쏙옙]</a>&nbsp;&nbsp;";
 			}
 		}
 		return str;
@@ -86,6 +86,12 @@ public class BoardBean {
 	public BoardBean() {
 		super();
 	}
+	
+	public BoardBean(String comm_originFileName, String comm_systemFileName) {
+		this.comm_originFileName = comm_originFileName;
+		this.comm_systemFileName = comm_systemFileName;
+	}
+
 	
 	public int getComm_index() {
 		return comm_index;

@@ -1,3 +1,5 @@
+<%@page import="com.oreilly.servlet.MultipartRequest"%>
+<%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.io.File"%>
@@ -8,8 +10,14 @@
 <%@page import="java.io.File"%>
 <%@page import="java.util.Enumeration"%>
 <%@page import="java.io.IOException"%>
-<%@page import="com.oreilly.servlet.MultipartRequest"%>
-<%@page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
+<%@page import="java.io.File"%>
+<%@page import="org.apache.commons.fileupload.FileItem"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="java.util.List"%>
+<%@page import="org.apache.commons.fileupload.servlet.ServletFileUpload"%>
+<%@page import="org.apache.commons.fileupload.disk.DiskFileItemFactory"%>
+<%@page import="org.apache.commons.fileupload.FileItemFactory"%>
+<%@page import="java.util.Date"%>
 
 <jsp:useBean id="board" class="board.BoardBean" scope="page"></jsp:useBean>
 <jsp:setProperty property="*" name="board" />
@@ -40,64 +48,63 @@
 	// 파일 업로드
 	// request.getRealPath("/upload") 를 통해 파일을 저장할 절대 경로를 구해온다
 	// 운영체제 및 프로젝트가 위차할 환경에 따라 경로가 다르기 때문에 아래처럼 구해오는 것
-	String path = request.getRealPath("/upload");
-	System.out.println("절대경로 : " + path + "<br/>");
-
-	int maxSize = 1024 * 1024 * 10; // 한번에 올릴 수 있는 파일 용량 : 10M로 제한
-
-	String comm_title = "";
-	String comm_content = "";
-
-	int comm_num = 0, comm_step = 0, comm_level = 0, comm_ref = 1;
-
-	String fileName1 = ""; // 중복처리된 이름
-	String comm_originalFileName = ""; // 중복 처리 전 실제 원본 이름
-	long fileSize = 0; // 파일 사이즈
-	String fileType = ""; // 파일 타입
-	
-	MultipartRequest multi = null;
-
-	try {
-
-		multi = new MultipartRequest(request, path, maxSize, "euc-kr", new DefaultFileRenamePolicy());
-
-		comm_title = multi.getParameter("comm_title");
-		comm_content = multi.getParameter("comm_content");
-
-		comm_num = Integer.parseInt(multi.getParameter("comm_num"));
-		comm_step = Integer.parseInt(multi.getParameter("comm_step"));
-		comm_level = Integer.parseInt(multi.getParameter("comm_level"));
-		comm_ref = Integer.parseInt(multi.getParameter("comm_ref"));
-
-		Enumeration files = multi.getFileNames();
-			
-		if (files != null) {
-			while (files.hasMoreElements()) {
-	
-				String file1 = (String) files.nextElement();
-				comm_originalFileName = multi.getOriginalFileName(HanConv.toKor(file1));
-					
-				System.out.println(comm_originalFileName);
-				
-				// 파일이 있을 경우
-				if(comm_originalFileName != null){
-					fileName1 = multi.getFilesystemName(file1);
-					fileType = multi.getContentType(file1);
-					File file = multi.getFile(file1);
-					fileSize = file.length();
-					board.setComm_originFileName(comm_originalFileName);
-					board.setComm_systemFileName(fileName1);
-				}else{
-					board.setComm_originFileName(null);
-					board.setComm_systemFileName(null);						
-				}
-			}
-		}	
+		String comm_title = "";
+		String comm_content = "";
+		String comm_originFileName = "";
+		String comm_systemFileName = "";
 		
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
+		int comm_index = 0, comm_num = 0;
+		int comm_ref=1, comm_step=0, comm_level=0;
+		
+		Date date = new Date();
+		FileItemFactory factory = new DiskFileItemFactory();
+		ServletFileUpload upload = new ServletFileUpload(factory);
+		List items = upload.parseRequest(request);
 
+		String uploadPath = request.getRealPath("//upload//");
+		
+		Iterator itr = items.iterator();
+	     while (itr.hasNext()) {
+	          FileItem item = (FileItem) itr.next();
+	          if (item.isFormField()) {
+	        	  if(item.getFieldName().equals("comm_title")){
+	        		  comm_title = HanConv.toKor(item.getString());
+	        	  }else if(item.getFieldName().equals("comm_content")){
+	        		  comm_content = HanConv.toKor(item.getString());
+	        		  comm_content = comm_content.replace("\n", "<br>");
+	        	  }else if(item.getFieldName().equals("comm_index")){
+	        		  comm_index = Integer.parseInt(item.getString());	
+	        	  }else if(item.getFieldName().equals("comm_num")){
+	        		  comm_num = Integer.parseInt(item.getString());	        		  
+	        	  }else if(item.getFieldName().equals("comm_groupn")){
+	        		  comm_groupn = Integer.parseInt(item.getString());	        		  
+	        	  }else if(item.getFieldName().equals("comm_ref")){
+	        		  comm_ref = Integer.parseInt(item.getString());
+	        	  }else if(item.getFieldName().equals("comm_step")){
+	        		  comm_step = Integer.parseInt(item.getString());	        		  
+	        	  }else if(item.getFieldName().equals("comm_level")){
+	        		  comm_level = Integer.parseInt(item.getString());	        		  
+	        	  }
+	          }else {
+	        	 String time = Long.toString(date.getTime());
+	             String itemName = item.getName();
+	             if(itemName.length() != 0){
+	            	 comm_originFileName += itemName + ",";
+	            	 comm_systemFileName += time + "_" + itemName + ",";
+	             	File savedFile = new File(uploadPath + "/" + time + "_" +itemName);
+	             	item.write(savedFile);	
+	             }
+	          }
+	     }
+		
+		if(comm_originFileName.length() == 0){
+			comm_originFileName = null;
+			comm_systemFileName = null;
+		}else{
+			board.setComm_originFileName(comm_originFileName);
+			board.setComm_systemFileName(comm_systemFileName);
+		}
+	    
 	
 	// 게시판 종류로 조건 걸어서 게시판번호 저장
 	// 넘어온 게시판 종류 값에 따라 1 이면 자유게시판
@@ -106,6 +113,7 @@
 	
 	} else if (comm_groupn == 2) { // 2 이면 문의 게시판
 		// 문의 게시판 종류 받아옴
+		MultipartRequest multi = new MultipartRequest(request, uploadPath);
 		int qanda = Integer.parseInt(multi.getParameter("qanda")); 
 		
 		// 문의게시판에서 만약 qanda 가 2이면(select value 값) 학사

@@ -6,6 +6,7 @@
 <head>
 <meta charset="EUC-KR">
 <title>Insert title here</title>
+  	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <link rel="stylesheet" href="../css/1_1.css" type="text/css" />
 <script type="text/javascript" src="../3/script.js" charset="utf-8"></script>
 
@@ -27,9 +28,6 @@
 	int comm_index = Integer.parseInt(request.getParameter("comm_index")); 
 	
 	String pageNUM = request.getParameter("pageNUM");
-	  if (pageNUM == null) {
-  	  pageNUM = "1";
-	  }
 	
 	// 게시판 인스턴스 생성
 	BoardDBBean db = BoardDBBean.getInstance();
@@ -45,10 +43,9 @@
 			</ul>
 
 			<div id="tab-1" class="tab-content current">
-				<form action="comm_Modify_Ok.jsp?comm_index=<%=comm_index%>&comm_groupn=<%=comm_groupn%>" method="post" name="form" enctype="multipart/form-data">
+				<form action="comm_Modify_Ok.jsp?comm_index=<%=comm_index%>&comm_groupn=<%=comm_groupn%>&pageNUM=<%=pageNUM %>" method="post" name="form" enctype="multipart/form-data">
 				<input type="hidden" name="existing_file" value="<%=board.getComm_originFileName()%>">
 				<input type="hidden" name="existing_sys_file" value="<%=board.getComm_systemFileName()%>">
-				<input type="hidden" name="pageNUM" value="<%=pageNUM%>">
 					<div class="table">
 						<table class="table table-bordered" cellpadding="10" cellspacing="4" width="800" height="200">
 							<%
@@ -78,7 +75,7 @@
 							</tr>
 							<tr height="450">
 								<td>
-									<textarea class="textarea" rows="25" cols="100" name="comm_content"><%=board.getComm_content()%></textarea>
+									<textarea class="textarea" rows="25" cols="100" name="comm_content"><%=board.getComm_content().replace("<br>", "\n")%></textarea>
 								</td>
 							</tr>
 							<tr height="40">
@@ -88,21 +85,27 @@
 							%>
 								<td>
 									기존 파일 : <%=board.getComm_originFileName() %>
-									&nbsp;&nbsp;&nbsp;&nbsp;
-									<input type="file" id="file" name="comm_file"/>							
+									&nbsp;&nbsp;&nbsp;&nbsp;<br>
+									<p>[새 파일 추가 시, 기존 파일은 삭제됩니다.]</p>
+									<input type="file" id="file" name="uploads" multiple/>							
 								</td>
 							<%
 								}else{
 									// 기존에 첨부한 파일이 없을 경우
 							%>
 								<td class="file">
-									<input type="file" id="file" name="comm_file"/>
+									<img alt="파일 아이콘" src="../css/file_icon.png" height="30">&nbsp;&nbsp;
+									<input type="file" id="file" name="uploads" multiple/>
 								</td>
 							<%
 								}
 							%>
 							</tr>
 						</table>
+						<div id="selectedFileListWrap" class="table">
+	           			 <table id="selectedFileList" class="table table-bordered">
+	           			</table>
+					</div>
 					</div>
 
 					<!-- 수정 & 초기화 & 목록으로 버튼 -->
@@ -111,7 +114,7 @@
 						&nbsp;&nbsp; 
 						<input type="reset" class="button" value="초기화" />
 						&nbsp;&nbsp; 
-						<input type="button" class="button" value="목록으로" onClick="history.go(-1);"/>
+						<input type="button" class="button" value="이전으로" onClick="history.go(-1);"/>
 					</p>
 				</form>
 				
@@ -122,4 +125,27 @@
 	</div>
 	<!-- <div id="contents"> END -->
 </body>
+<script>
+$("#selectedFileListWrap").hide();
+$(document).ready(function(){
+    $('input[type="file"]').change(function(e){
+    	$("#selectedFileListWrap").show();
+    	const input = document.querySelector('#file');
+    	const selectedFiles = input.files;
+		var cnt = 1;
+		var Parent = document.getElementById("selectedFileList");
+		while(Parent.hasChildNodes()){
+			Parent.removeChild(Parent.firstChild);		
+		}
+
+    	for(const file of selectedFiles) {
+    		var tableData = document.getElementById("selectedFileList");
+    		var row = tableData.insertRow(tableData.rows.length);
+    		var cell = row.insertCell(0);
+        	cell.innerHTML = "첨부파일 " + cnt + " <input type='text' readonly value='"+file.name+"'>";
+       		cnt++;
+    	}
+    });
+});
+</script>
 </html>

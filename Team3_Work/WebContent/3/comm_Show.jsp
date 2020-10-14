@@ -1,4 +1,5 @@
 <!-- 게시글 조회 -->
+<%@page import="java.util.StringTokenizer"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <%@page import="board.*"%>
 <%@page import="student.*"%>
@@ -10,6 +11,7 @@
    
    // 있던 페이지로 돌아갈 수 있도록 pageNUM 받아옴
    String pageNUM = request.getParameter("pageNUM");
+   System.out.println("pageNUM >> " + pageNUM);
 
    // 세션정보 받아와서 id에 저장
    int id = (Integer) session.getAttribute("uid"); 
@@ -54,6 +56,18 @@
       	comm_originalFileName = board.getComm_originFileName();
       	comm_systemFileName = board.getComm_systemFileName();
       }
+      
+  	ArrayList<BoardBean> files = null;
+
+  	if(board.getComm_originFileName() != null){
+  		files = new ArrayList<BoardBean>();
+  		StringTokenizer orgTokenizer = new StringTokenizer(board.getComm_originFileName(), ",");
+  		StringTokenizer sysTokenizer = new StringTokenizer(board.getComm_systemFileName(), ",");
+  	
+  		while(orgTokenizer.hasMoreTokens()){
+  			files.add(new BoardBean(orgTokenizer.nextToken(), sysTokenizer.nextToken()));	
+  		}
+  	}
    %>
 
 <!DOCTYPE html>
@@ -144,13 +158,19 @@
                   %>
                   <tr>
 
-                     <th class="menu">첨부파일</th>
+                     <th class="menu">첨부파일&nbsp;&nbsp;<img alt="다운로드 아이콘" src="../css/download_icon.png" height="22"></th>
                      <td colspan="3">
-                        
-                        <a id="downA" href="#"><%=comm_originalFileName%>
-                        &nbsp;
-                        <img alt="다운로드 아이콘" src="../css/download_icon.png" height="22"></a>
-                     </td>
+                       <%
+						for(int i=0; i<files.size(); i++){
+							String orgName = files.get(i).getComm_originFileName();
+							String sysName = files.get(i).getComm_systemFileName();
+							out.println("<p>첨부파일 " + (i+1) + " : <a href='comm_File_Down.jsp?file_name="+sysName+"&orgName="+orgName+"'>" + orgName +"</p>");
+						}
+					%>
+                       </td>
+                  </tr>
+                  <tr>
+	
                   </tr>
                   <%
                      }
@@ -248,11 +268,11 @@
                <%
                   String forwardFile = "";
                   if(comm_groupn == 1){
-                     forwardFile = "location.href='comm_Freeboard.jsp?pageNUM=" + pageNUM + "'";
+                     forwardFile = "location.href='comm_Freeboard.jsp?pageNUM=" + pageNUM + "';";
                   }else if(comm_groupn == 2 || comm_groupn == 3){
-                     forwardFile = "location.href='comm_Q_And_A.jsp?pageNUM=" + pageNUM + "'";                     
+                     forwardFile = "location.href='comm_Q_And_A.jsp?pageNUM=" + pageNUM + "';";                     
                   }else{
-                     forwardFile = "location.href='../2/stu_Notice.jsp?pageNUM=" + pageNUM + "'";                     
+                     forwardFile = "location.href='../2/stu_Notice.jsp?pageNUM=" + pageNUM + "';";                     
                   }
                %>
             
@@ -260,7 +280,7 @@
             if (stu_id == comm_stu_id) {
             %>
                <!-- 세션에서 받아온 학번과 작성자 학번의 값이 같으면 수정, 삭제 버튼이 보이도록 -->
-               <input type="button" class="button" value="수정" onclick="location.href='comm_Modify.jsp?comm_index=<%=comm_index%>&comm_groupn=<%=comm_groupn%>';" /> 
+               <input type="button" class="button" value="수정" onclick="location.href='comm_Modify.jsp?comm_index=<%=comm_index%>&comm_groupn=<%=comm_groupn%>&pageNUM=<%=pageNUM %>';" /> 
                &nbsp;&nbsp; 
                <input type="button" class="button" value="삭제" onclick="location.href='comm_Delete.jsp?comm_index=<%=comm_index%>';"/> 
                &nbsp;&nbsp; 
@@ -287,7 +307,7 @@
 </body>
 
 <!-- 파일 다운로드를 위한 script -->
-<script type="text/javascript">
+<%-- <script type="text/javascript">
    // 영문파일은 그냥 다운로드 클릭시 정상작동하지만 한글파일명을 쿼리문으로 날릴경우 인코딩 문제가 발생할 수 있다. 
    // 한글이 깨져 정상작동하지 않을 수 있음
    // 따라서, 쿼리문자열에 한글을 보낼 때는 항상 인코딩을 해서 보내주도록 함.
@@ -297,7 +317,7 @@
         event.stopPropagation();// 이벤트의 전파를 막음
             
       // 인코딩된 파일이름을 쿼리문자열에 포함시켜 다운로드 페이지로 이동
-      window.location.href = "comm_File_Down.jsp?file_name=" + '<%=comm_originalFileName%>';
+      window.location.href = "comm_File_Down.jsp?file_name=" + '<%=sysName%>';
    });
-</script>
+</script> --%>
 </html>
