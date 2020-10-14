@@ -1,4 +1,5 @@
 <!-- 게시글 조회 -->
+<%@page import="java.io.File"%>
 <%@page import="java.util.StringTokenizer"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <%@page import="board.*"%>
@@ -95,7 +96,7 @@
 
          <div id="tab-1" class="tab-content current">
             <div class="table">
-               <table class="table table-bordered" cellpadding="10" cellspacing="3" width="800" height="500" align="center">
+               <table class="table table-bordered" cellpadding="10" cellspacing="3" width="800" height="auto" align="center">
                   <tr>
                      <th class="menu">글번호</th>
                      <td width="300"><%=comm_num%></td>
@@ -151,7 +152,7 @@
                      <th class="menu" colspan="6">본문</th>
                   </tr>
                   <tr>
-                     <td colspan="6" align="left"><%=comm_content%></td>
+                     <td colspan="6" align="left" height="300"><%=comm_content%></td>
                   </tr>
                   <%
                      if (comm_originalFileName != null) {
@@ -161,12 +162,20 @@
                      <th class="menu">첨부파일&nbsp;&nbsp;<img alt="다운로드 아이콘" src="../css/download_icon.png" height="22"></th>
                      <td colspan="3">
                        <%
+                       String orgName = null;
+                       String sysName = null;
+                        String saveDirectory = "/upload/";
 						for(int i=0; i<files.size(); i++){
-							String orgName = files.get(i).getComm_originFileName();
-							String sysName = files.get(i).getComm_systemFileName();
-							out.println("<p>첨부파일 " + (i+1) + " : <a href='comm_File_Down.jsp?file_name="+sysName+"&orgName="+orgName+"'>" + orgName +"</a></p>");
-						}
+							orgName = files.get(i).getComm_originFileName();
+							sysName = files.get(i).getComm_systemFileName();
+							out.println("<p>첨부파일 " + (i+1) + " : <a href='comm_File_Down.jsp?file_name="+sysName+"&orgName="+orgName+"'><font color='blue'>" + orgName +"</font></a></p>");
 					%>
+					<img src="<%=saveDirectory + files.get(i).getComm_systemFileName()%>" width="150" alt="">
+						<%
+						}
+               			String path = saveDirectory + sysName;
+               			System.out.println(path);
+    					%>	
                        </td>
                   </tr>
                   <tr>
