@@ -10,7 +10,7 @@
 		String filename = HanConv.toKor(request.getParameter("file_name"));
 		String orgname = HanConv.toKor(request.getParameter("orgName"));
 		
-		String saveDirectory = application.getRealPath("/upload");
+		String saveDirectory = "C:/upload/";
 		String path = saveDirectory + File.separator + filename;
 		
 		System.out.println(path);

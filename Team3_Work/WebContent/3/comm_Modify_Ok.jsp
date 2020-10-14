@@ -49,7 +49,7 @@
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		List items = upload.parseRequest(request);
 
-		String uploadPath = request.getRealPath("//upload//");
+		String uploadPath = "C:/upload/";
 		
 		Iterator itr = items.iterator();
 	     while (itr.hasNext()) {

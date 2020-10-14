@@ -51,18 +51,23 @@
 					// 저장되어 있는 파일이 있을 경우, 디렉토리에서 삭제하도록 함
 					// 글번호로 찾은 정보에 있는 systemFileName 을 fileName에 저장
 					String fileName = board.getComm_systemFileName();
-					// 만약 fileName이 null 이 아니라면
+					
 					if(fileName != null){
-						// 파일이 있는 폴더의 절대경로를 가져옴
-						String folder = request.getServletContext().getRealPath("/upload");
-						// 파일의 절대경로를 만들어줌
-						String filePath = folder + "/" + fileName;
 						
-						File file = new File(filePath);
-						if(file.exists()){
-							file.delete(); // 파일은 1개만 업로드 되기때문에 한번만 삭제해주면 됨
+						// 복수의 파일일 경우 ','을 기준으로 파일명을 잘라서 array에 담아줌
+						String[] array = fileName.split(",");
+						String folder = "C:/upload/";
+						
+						for(int i = 0; i < array.length; i++){
+							System.out.println(array[i]);
+							String filePath = folder + "/" + array[i];
+							
+							File file = new File(filePath);
+							if(file.exists()){
+								file.delete(); // 파일은 1개만 업로드 되기때문에 한번만 삭제해주면 됨
+							}
+						
 						}
-					}
 				
 					if (comm_groupn == 1) {
 						out.print("<script>");
@@ -75,7 +80,10 @@
 						out.print("location.href='comm_Q_And_A.jsp';");
 						out.print("</script>");
 					}
+				
 				}
 			}
+			}
 		}
+		
 	%>
