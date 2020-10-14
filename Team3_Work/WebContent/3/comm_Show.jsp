@@ -164,7 +164,7 @@
 						for(int i=0; i<files.size(); i++){
 							String orgName = files.get(i).getComm_originFileName();
 							String sysName = files.get(i).getComm_systemFileName();
-							out.println("<p>梅何颇老 " + (i+1) + " : <a href='comm_File_Down.jsp?file_name="+sysName+"&orgName="+orgName+"'>" + orgName +"</p>");
+							out.println("<p>梅何颇老 " + (i+1) + " : <a href='comm_File_Down.jsp?file_name="+sysName+"&orgName="+orgName+"'>" + orgName +"</a></p>");
 						}
 					%>
                        </td>
