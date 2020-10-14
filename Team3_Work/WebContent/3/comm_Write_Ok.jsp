@@ -88,9 +88,8 @@
 					board.setComm_originFileName(comm_originalFileName);
 					board.setComm_systemFileName(fileName1);
 				}else{
-					// 파일이 없으면  null 로 저장
-					board.setComm_originFileName("");
-					board.setComm_systemFileName("");						
+					board.setComm_originFileName(null);
+					board.setComm_systemFileName(null);						
 				}
 			}
 		}	

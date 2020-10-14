@@ -1,5 +1,8 @@
+<%@page import="student.StudentDBBean"%>
+<%@page import="attend.View2Bean"%>
+<%@page import="java.util.ArrayList"%>
 <%@page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+	pageEncoding="EUC-KR"%>
 
 <!DOCTYPE html>
 <html>
@@ -8,23 +11,46 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<%
-		int id = Integer.parseInt(request.getParameter("id"));
-		int grade = Integer.parseInt(request.getParameter("grade"));
-		int semester = Integer.parseInt(request.getParameter("semester"));
-	%>
-	
-   <form action="stu_Class_Info.jsp" name="hiddenForm">
-      <input type="hidden" name="id" value="<%=id%>">
-      <input type="hidden" name="grade" value="<%=grade%>">
-      <input type="hidden" name="semester" value="<%=semester%>">
-      <input type="hidden" name="class_search_result" value="result">
-   
-   </form>
-   <script>
-      document.hiddenForm.submit();
-      
-   </script>
-	
+	<table style="width: 500px;">
+		<tr>
+			<th>이수구분</th>
+			<th>교과목명</th>
+			<th>학점</th>
+			<th>담당교수</th>
+		</tr>
+
+		<%
+						StudentDBBean student = StudentDBBean.getInstance();
+						ArrayList<View2Bean> viewlist = null;
+				
+						int stu_id = Integer.parseInt(request.getParameter("id"));
+						int stu_grade = Integer.parseInt(request.getParameter("grade"));
+						int stu_semester = Integer.parseInt(request.getParameter("semester"));
+						
+						viewlist = student.listView(stu_id, stu_grade, stu_semester);
+						
+						for(int i=0; i<viewlist.size(); i++){
+							View2Bean view2 = viewlist.get(i);
+							
+							String subj_state = view2.getSubj_state();
+							String subj_name = view2.getSubj_name();
+							int subj_hakjum = view2.getSubj_hakjum();
+							String pro_name = view2.getPro_name();
+							int subj_code = view2.getSc_subj_code();
+				%>
+		<tr onclick="attend(<%=stu_id%>, <%=subj_code%>)" style="cursor: pointer;"
+			onMouseOver="this.style.backgroundColor='#F0F1F3';"
+			onMouseOut="this.style.backgroundColor='#FFFFFF';">
+			<td><%=subj_state%></td>
+			<td><%=subj_name%></td>
+			<td><%=subj_hakjum %></td>
+			<td><%=pro_name %></td>
+		</tr>
+		<% 
+						}
+					
+		%>
+	</table>
+
 </body>
 </html>

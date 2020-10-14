@@ -66,8 +66,8 @@
 							관리</span> <span class="arrow"><i class="fas fa-sort-down"></i></span>
 				</a>
 					<ul class="sub_menu">
-						<li><a href="../1/stu_Class_Info.jsp">강의 시간표</a></li>
-						<li><a href="../1/stu_Class_Info.jsp">출석 조회</a></li>
+						<li><a class="tabLink" href="../1/stu_Class_Info.jsp">강의 시간표</a></li>
+						<li><a class="tabLink" href="../1/stu_Class_Info.jsp?num=1">출석 조회</a></li>
 						<li><a href="../2/year_Schedule_Rs.jsp">학사 일정</a></li>
 					</ul></li>
 			</ul>

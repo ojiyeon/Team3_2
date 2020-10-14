@@ -13,6 +13,9 @@ public class StudentBean {
 	private int stu_major; 
 	private int stu_grade; 
 	private int stu_pro; // ��������(������ȣ)
+	private String dept_name;
+	private String dept_majorname;
+	
 	private String stu_tel; 
 	private String stu_emg_tel; 
 	private String stu_addr; 
@@ -41,6 +44,19 @@ public class StudentBean {
 		this.mail2 = mail2;
 	}
 	
+	
+	public String getDept_name() {
+		return dept_name;
+	}
+	public void setDept_name(String dept_name) {
+		this.dept_name = dept_name;
+	}
+	public String getDept_majorname() {
+		return dept_majorname;
+	}
+	public void setDept_majorname(String dept_majorname) {
+		this.dept_majorname = dept_majorname;
+	}
 	
 	public String getDetailAddr() {
 		return detailAddr;

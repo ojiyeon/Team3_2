@@ -146,15 +146,15 @@ table {
                <ul>
                   <li>
                   <a class="a" href="../3/comm_Show.jsp?comm_index=<%=comm_index%>&pageNUM=<%=pageNUM%>">
-                  <span> <%=comm_title%> 
+                  <span> 
                   <%
                       if (inputDate.equals(now)) {
                    %>
-                    &nbsp;&nbsp;<img alt="" src="../css/new.png" height="22" width="25"> 
+                    <img alt="" src="../css/new.png" height="22" width="25">  &nbsp;&nbsp;
                    <%
                       }
                    %>
-                     </span>
+                  <%=comm_title%></span>
                         <p><%=comm_date2%></p> 
                      </a>
                      </li>
@@ -202,7 +202,7 @@ table {
 			
 			Calendar cal = Calendar.getInstance();
 			int year = cal.get(Calendar.YEAR);
-			viewlist = student.ScheduleView(year);
+			viewlist = student.ScheduleView(true, year);
 			
 			System.out.println(viewlist.size());
 			

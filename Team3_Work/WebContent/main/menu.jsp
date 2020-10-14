@@ -15,7 +15,6 @@
 <link href="../resource/css/custom.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="../resource/js/bootstrap.min.js"></script>
-
 <script>
 	$(document).ready(function() {
 		$("ul.submenu1 li a.j").hover(function() {
@@ -40,7 +39,8 @@
 				<input class="button" type="button" value="로그아웃" onclick="location.href='../main/logOut.jsp'" />
 		</div>
 
-		<h1>
+		<img src="../css/logo4.png" alt="logo" class="logoImg">
+		<h1 class="test">
 			<a href="../main/main.jsp">BIT학사시스템</a>
 		</h1>
 		<div>

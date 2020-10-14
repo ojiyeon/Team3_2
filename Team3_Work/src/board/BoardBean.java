@@ -14,17 +14,17 @@ public class BoardBean {
 	private int comm_hits;
 	private String date2;
 	private int comm_stu_id;
-	private int comm_ref = 0; // ±Û ±×·ì ¹øÈ£ ÄÃ·³
-	private int comm_step = 0; // ±Û À§Ä¡
-	private int comm_level = 0; // ´äº¯ ¼øÀ§
+	private int comm_ref = 0; // ï¿½ï¿½ ï¿½×·ï¿½ ï¿½ï¿½È£ ï¿½Ã·ï¿½
+	private int comm_step = 0; // ï¿½ï¿½ ï¿½ï¿½Ä¡
+	private int comm_level = 0; // ï¿½äº¯ ï¿½ï¿½ï¿½ï¿½
 	private String comm_originFileName;
 	private String comm_systemFileName;
 	
-	public static int pageSize = 10; // ÇÑ ÆäÀÌÁö¿¡ Ãâ·ÂµÉ °Ô½Ã¹° °¹¼ö
-	public static int pagecount = 1; // ÆäÀÌÁö °³¼ö
-	public static int pageNUM = 1; // ÇöÀç ÆäÀÌÁö
+	public static int pageSize = 10; // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Âµï¿½ ï¿½Ô½Ã¹ï¿½ ï¿½ï¿½ï¿½ï¿½
+	public static int pagecount = 1; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	public static int pageNUM = 1; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
-	// ÆäÀÌÂ¡ Ã³¸®
+	// ï¿½ï¿½ï¿½ï¿½Â¡ Ã³ï¿½ï¿½
 	public static String pageNumber(int comm_groupn, int limit) {
 		String str = "";
 		int temp = (pageNUM - 1) % limit;
@@ -32,7 +32,7 @@ public class BoardBean {
 
 		if (comm_groupn == 1) {
 			if ((startPage - limit) > 0) {
-				str += "<a href='comm_Freeboard.jsp?pageNUM=" + (startPage - 1) + "'>[ÀÌÀü]</a>&nbsp;&nbsp;";
+				str += "<a href='comm_Freeboard.jsp?pageNUM=" + (startPage - 1) + "'>[ï¿½ï¿½ï¿½ï¿½]</a>&nbsp;&nbsp;";
 			}
 			for (int i = startPage; i < (startPage + limit); i++) {
 				if (i == pageNUM) {
@@ -44,11 +44,11 @@ public class BoardBean {
 					break;
 			}
 			if ((startPage + limit) <= pagecount) {
-				str += "<a href='comm_Freeboard.jsp?pageNUM=" + (startPage + limit) + "'>[´ÙÀ½]</a>&nbsp;&nbsp;";
+				str += "<a href='comm_Freeboard.jsp?pageNUM=" + (startPage + limit) + "'>[ï¿½ï¿½ï¿½ï¿½]</a>&nbsp;&nbsp;";
 			}
 		}else if (comm_groupn == 2 || comm_groupn == 3) {
 			if ((startPage - limit) > 0) {
-				str += "<a href='comm_Q_And_A.jsp?pageNUM=" + (startPage - 1) + "'>[ÀÌÀü]</a>&nbsp;&nbsp;";
+				str += "<a href='comm_Q_And_A.jsp?pageNUM=" + (startPage - 1) + "'>[ï¿½ï¿½ï¿½ï¿½]</a>&nbsp;&nbsp;";
 			}
 			for (int i = startPage; i < (startPage + limit); i++) {
 				if (i == pageNUM) {
@@ -60,7 +60,23 @@ public class BoardBean {
 					break;
 			}
 			if ((startPage + limit) <= pagecount) {
-				str += "<a href='comm_Q_And_A.jsp?pageNUM=" + (startPage + limit) + "'>[´ÙÀ½]</a>&nbsp;&nbsp;";
+				str += "<a href='comm_Q_And_A.jsp?pageNUM=" + (startPage + limit) + "'>[ï¿½ï¿½ï¿½ï¿½]</a>&nbsp;&nbsp;";
+			}
+		}else if (comm_groupn == 4) {
+			if ((startPage - limit) > 0) {
+				str += "<a href='stu_Notice.jsp?pageNUM=" + (startPage - 1) + "'>[ï¿½ï¿½ï¿½ï¿½]</a>&nbsp;&nbsp;";
+			}
+			for (int i = startPage; i < (startPage + limit); i++) {
+				if (i == pageNUM) {
+					str += "[" + i + "]&nbsp;&nbsp;";
+				} else {
+					str += "<a href='stu_Notice.jsp?pageNUM=" + i + "'>[" + i + "]</a>&nbsp;&nbsp;";
+				}
+				if (i >= pagecount)
+					break;
+			}
+			if ((startPage + limit) <= pagecount) {
+				str += "<a href='stu_Notice.jsp?pageNUM=" + (startPage + limit) + "'>[ï¿½ï¿½ï¿½ï¿½]</a>&nbsp;&nbsp;";
 			}
 		}
 		return str;

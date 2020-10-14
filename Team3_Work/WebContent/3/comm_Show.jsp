@@ -30,8 +30,8 @@
    String comm_content = "";
    String comm_writer = "";
    String comm_date = "";
-   String comm_originalFileName = "";
-   String comm_systemFileName = "";
+   String comm_originalFileName = null;
+   String comm_systemFileName = null;
    
    int comm_index = 0;
    int comm_groupn = 0;
@@ -50,8 +50,10 @@
       comm_groupn = board.getComm_groupn();
       comm_writer = board.getComm_writer();
       comm_stu_id = board.getComm_stu_id();
-      comm_originalFileName = board.getComm_originFileName();
-      comm_systemFileName = board.getComm_systemFileName();
+      if(board.getComm_originFileName() != null){
+      	comm_originalFileName = board.getComm_originFileName();
+      	comm_systemFileName = board.getComm_systemFileName();
+      }
    %>
 
 <!DOCTYPE html>

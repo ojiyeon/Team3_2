@@ -11,6 +11,11 @@
 <style>
 .blank {
 	height: 50px;
+	
+}
+section {
+	height: 80vh;
+	display: block;
 }
 </style>
 <link rel="stylesheet" href="../css/1_1.css" type="text/css" />
@@ -30,7 +35,7 @@
 
 	<jsp:include page="../main/menu.jsp"></jsp:include>
 	<jsp:include page="../main/sidemenu.jsp"></jsp:include>
-	
+<section>	
 	<div id="contents">
 		<div class="container">
 
@@ -89,11 +94,11 @@
 						<tr>
 							<td align="center" class="menu">소속학부</td>
 							<td>
-								상경대
+								<%=stu_b.getDept_name() %>
 							</td>
 							<td align="center" class="menu">소속학과</td>
 							<td>
-								<%=stu_b.getStu_major() %>
+								<%=stu_b.getDept_majorname() %>
 							</td>
 						</tr>
 
@@ -162,6 +167,7 @@
 			</div>
 		</div>
 	</div>
+</section>
 	<!-- </section> -->
 	<jsp:include page="../main/footer.jsp"></jsp:include>
 </body>

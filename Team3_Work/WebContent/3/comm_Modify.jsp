@@ -26,6 +26,11 @@
 	// 게시글 고유번호
 	int comm_index = Integer.parseInt(request.getParameter("comm_index")); 
 	
+	String pageNUM = request.getParameter("pageNUM");
+	  if (pageNUM == null) {
+  	  pageNUM = "1";
+	  }
+	
 	// 게시판 인스턴스 생성
 	BoardDBBean db = BoardDBBean.getInstance();
 
@@ -43,6 +48,7 @@
 				<form action="comm_Modify_Ok.jsp?comm_index=<%=comm_index%>&comm_groupn=<%=comm_groupn%>" method="post" name="form" enctype="multipart/form-data">
 				<input type="hidden" name="existing_file" value="<%=board.getComm_originFileName()%>">
 				<input type="hidden" name="existing_sys_file" value="<%=board.getComm_systemFileName()%>">
+				<input type="hidden" name="pageNUM" value="<%=pageNUM%>">
 					<div class="table">
 						<table class="table table-bordered" cellpadding="10" cellspacing="4" width="800" height="200">
 							<%

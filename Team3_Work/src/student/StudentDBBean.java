@@ -42,7 +42,8 @@ public class StudentDBBean {
 		PreparedStatement pstmt = null;
 		ResultSet rs=null;
 		StudentBean stu = null;
-		String sql="select s.*, p.pro_name from student s join professor p on s.stu_pro=p.pro_id where s.stu_id=?";
+		String sql="select s.*, p.pro_name, d.dept_name, d.dept_majorname from student s join professor p on s.stu_pro=p.pro_id join department d "
+				+ "on s.stu_major=d.dept_majorcode where s.stu_id=?";
 		try {
 			con=getConnection();
 			pstmt=con.prepareStatement(sql);
@@ -61,6 +62,8 @@ public class StudentDBBean {
 				stu.setStu_major(rs.getInt("STU_MAJOR"));
 				stu.setStu_grade(rs.getInt("STU_GRADE"));
 				stu.setStu_pro(rs.getInt("STU_PRO"));
+				stu.setDept_name(rs.getString("DEPT_NAME"));
+				stu.setDept_majorname(rs.getNString("DEPT_MAJORNAME"));
 				stu.setStu_tel(rs.getString("STU_TEL"));
 				stu.setStu_emg_tel(rs.getString("STU_EMG_TEL"));
 				stu.setStu_addr(rs.getString("STU_ADDR"));
@@ -221,7 +224,6 @@ public class StudentDBBean {
 																	//atd_remark(비고)가 null이면 공란,아니면  데이터 가져옴
 				viewlist.add(attend);
 			}
-			System.out.println(viewlist.size());
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally {
@@ -275,7 +277,7 @@ public class StudentDBBean {
 		ArrayList<ScoreClassBean> scorelist = new ArrayList<ScoreClassBean>();
 		try {
 			con=getConnection();
-			sql ="SELECT C.SC_YEAR, C.SC_GRADE, C.SC_SEMESTER, S.SUBJ_STATE, S.SUBJ_NAME, S.SUBJ_HAKJUM, C.SC_SCORE, C.SC_SCORE2 FROM SCORECLASS C join SUBJECT S"
+			sql ="SELECT C.SC_YEAR, C.SC_GRADE, C.SC_SEMESTER, S.SUBJ_STATE, S.SUBJ_NAME, S.SUBJ_HAKJUM, C.SC_SCORE, C.SC_SCORE2 FROM SCORECLASS C JOIN SUBJECT S"
 																+ " ON C.SC_SUBJ_CODE=S.SUBJ_CODE WHERE SC_STU_ID=? AND SC_YEAR=? AND SC_SEMESTER=?";
 			pstmt=con.prepareStatement(sql);
 			pstmt.setInt(1, id);
@@ -394,7 +396,7 @@ public class StudentDBBean {
 		return viewlist;
 	}
 	//================학사일정 가져오는 메소드=================//
-	public ArrayList<ScheduleBean> ScheduleView(int year){
+	public ArrayList<ScheduleBean> ScheduleView(boolean bol, int year){
 		Connection con=null;
 		PreparedStatement pstmt = null;
 		ResultSet rs=null;
@@ -404,11 +406,16 @@ public class StudentDBBean {
 		
 		try {
 			con=getConnection();
-			sql="SELECT * FROM SCHEDULE WHERE SCHE_STARTYEAR=? AND SCHE_STARTMONTH =? ORDER BY SCHE_STARTMONTH, SCHE_STARTDAY";
+			if(bol) { 
+				sql="SELECT * FROM SCHEDULE WHERE SCHE_STARTYEAR=? AND SCHE_STARTMONTH =? ORDER BY SCHE_STARTMONTH, SCHE_STARTDAY";				
+			}else { 
+				sql="SELECT * FROM SCHEDULE WHERE SCHE_STARTYEAR=? ORDER BY SCHE_STARTMONTH, SCHE_STARTDAY";				
+			}
 			
 			pstmt=con.prepareStatement(sql);
 			pstmt.setInt(1, year);
-			pstmt.setInt(2, Calendar.getInstance().get(Calendar.MONTH)+1);
+			if(bol)
+				pstmt.setInt(2, Calendar.getInstance().get(Calendar.MONTH)+1);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -436,6 +443,33 @@ public class StudentDBBean {
 		}
 		return viewlist;
 	}	
+	//================비밀번호 메소드=================//
+	public int updatePwd(String id, String pwd) {
+		Connection con=null;
+		PreparedStatement pstmt = null;
+		int result=-1;
+		
+		try {
+			con=getConnection();
+			String sql="UPDATE STUDENT SET STU_PWD =? WHERE STU_ID=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, pwd);
+			pstmt.setString(2, id);
+			result = pstmt.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(con != null) con.close();
+			}catch(Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
+	
 }
 
 

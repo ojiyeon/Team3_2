@@ -13,6 +13,11 @@
 </jsp:useBean>
 
 	<%
+	  String pageNUM = request.getParameter("pageNUM");
+ 	  if (pageNUM == null) {
+    	  pageNUM = "1";
+ 	  }
+	
 	// 게시판 종류
 	int comm_groupn = Integer.parseInt(request.getParameter("comm_groupn")); 
 	// 게시글 고유 번호
@@ -35,7 +40,7 @@
 	String existingSysFile = ""; // 기존 시스템 파일명
 
 	String fileName1 = ""; // 중복처리된 이름
-	String comm_originalFileName = ""; // 중복 처리 전 실제 원본 이름
+	String comm_originalFileName = null; // 중복 처리 전 실제 원본 이름
 	String fileType = ""; // 파일 타입
 	long fileSize = 0; // 파일 사이즈
 
@@ -73,8 +78,8 @@
 					board.setComm_systemFileName(fileName1);
 				}else{
 				// 수정시에 파일을 업로드 하지 않았다면 기존 파일명 유지
-					board.setComm_originFileName(existFile);
-					board.setComm_systemFileName(existingSysFile);
+				//	board.setComm_originFileName(existFile);
+				//	board.setComm_systemFileName(existingSysFile);
 				}
 			}
 		}	
@@ -110,7 +115,7 @@
 	if (re == 1) {
 		out.print("<script>");
 		out.print("alert('게시글 수정이 완료되었습니다.');");
-		out.print("location.href='comm_Show.jsp?comm_index=" + comm_index + "'");
+		out.print("location.href='comm_Show.jsp?comm_index=" + comm_index + "'&pageNUM="+pageNUM);
 		out.print("</script>");	
 	} else {
 		out.print("<script>");

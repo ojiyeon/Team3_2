@@ -109,8 +109,10 @@ public class BoardDBBean {
 			}
 
 			// comm_index 중 가장 큰 값에 +1 더한 값을 포함하여 모든 입력 값 저장
-			sql = "insert into community (comm_index, comm_num, comm_groupn, comm_date, comm_title, comm_content, comm_hits, comm_writer, comm_stu_id, comm_step, comm_level, comm_ref, comm_originFileName, comm_systemFileName) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+			if(board.getComm_originFileName() == null) {
+				sql = "insert into community (comm_index, comm_num, comm_groupn, comm_date, comm_title, comm_content, comm_hits, comm_writer, comm_stu_id, comm_step, comm_level, comm_ref) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";				
+			}else
+				sql = "insert into community (comm_index, comm_num, comm_groupn, comm_date, comm_title, comm_content, comm_hits, comm_writer, comm_stu_id, comm_step, comm_level, comm_ref, comm_originFileName, comm_systemFileName) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			pstmt = con.prepareStatement(sql);
 
 			pstmt.setInt(1, index);
@@ -125,9 +127,10 @@ public class BoardDBBean {
 			pstmt.setInt(10, step);
 			pstmt.setInt(11, level);
 			pstmt.setInt(12, ref);
-			pstmt.setString(13, board.getComm_originFileName());
-			pstmt.setString(14, board.getComm_systemFileName());
-
+			if(board.getComm_originFileName() != null) {
+				pstmt.setString(13, board.getComm_originFileName());
+				pstmt.setString(14, board.getComm_systemFileName());
+			}
 			pstmt.executeUpdate();
 
 			pstmt.close();
@@ -158,8 +161,8 @@ public class BoardDBBean {
 	// 글 목록 조회
 	public ArrayList<BoardBean> getListBoard(String col, String word, int comm_groupn, String pageNumber) { // 제네릭은
 																											// 파일파라미터
-																											// 라고도 함
-
+																									// 라고도 함
+		
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -271,8 +274,8 @@ public class BoardDBBean {
 								ResultSet.CONCUR_UPDATABLE);
 						pstmt.setString(1, "%" + HanConv.toKor(word) + "%");
 						rs = pstmt.executeQuery();
-					} else if (comm_groupn == 4) {
-						sql = "select a.*, to_char(comm_date, 'YYYY-MM-DD hh24:mi') date2 from community a where comm_groupn=4 and comm_title like ? order by comm_ref desc, comm_step asc";
+					} else {
+						sql = "select a.*, to_char(comm_date, 'YYYY-MM-DD hh24:mi') date2 from community a where comm_groupn=4 and comm_content like ? order by comm_ref desc, comm_step asc";
 						pstmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
 								ResultSet.CONCUR_UPDATABLE);
 						pstmt.setString(1, "%" + HanConv.toKor(word) + "%");
@@ -516,14 +519,21 @@ public class BoardDBBean {
 
 		try {
 			con = getConnection();
-
+			if(board.getComm_originFileName() != null) {
 			sql = "update community set comm_title=?, comm_content=?, comm_originfilename=?, comm_systemfilename=? where comm_index=?";
+			}else {
+				sql = "update community set comm_title=?, comm_content=? where comm_index=?";				
+			}
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, board.getComm_title());
 			pstmt.setString(2, board.getComm_content());
-			pstmt.setString(3, board.getComm_originFileName());
-			pstmt.setString(4, board.getComm_systemFileName());
-			pstmt.setInt(5, board.getComm_index());
+			if(board.getComm_originFileName() != null) {
+				pstmt.setString(3, board.getComm_originFileName());
+				pstmt.setString(4, board.getComm_systemFileName());
+				pstmt.setInt(5, board.getComm_index());
+			}else {
+				pstmt.setInt(3, board.getComm_index());				
+			}
 			re = pstmt.executeUpdate();
 
 		} catch (Exception e) {

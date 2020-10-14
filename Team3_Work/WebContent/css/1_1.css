@@ -68,7 +68,7 @@ ul.tabs li.current {
 	/* background: #ededed; */
 	padding: 15px;
 	border-top: 1px dotted #11264f;
-	border-bottom: 1px dotted #11264f;
+	/* border-bottom: 1px dotted #11264f; */
 	color: black;
 }
 

@@ -43,7 +43,7 @@ footer {
 
    <%
    // 검색어가 있을 경우, 값을 받아서 변수에 저장
-   String search_col = request.getParameter("select_col");
+   String search_col = request.getParameter("search_col");
    String search = request.getParameter("search");
 
    // 페이징 처리
@@ -57,7 +57,6 @@ footer {
    BoardDBBean db = new BoardDBBean();
 
    boardList = db.getListBoard(search_col, search, 4, pageNUM);
-
    String comm_title, comm_date2, comm_originalFileName, comm_systemFileName;
    Timestamp comm_date;
    
@@ -144,7 +143,7 @@ footer {
                   <!-- 검색 -->
                   <form action="stu_Notice.jsp" method="post" name="search_frm">
                      <p class="select">
-                        <select name="select_col">
+                        <select name="search_col">
                            <option value="search_title">제목</option>
                            <option value="search_content">내용</option>
                         </select>
