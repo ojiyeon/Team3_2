@@ -1,4 +1,5 @@
 <!-- 게시글 삭제 -->
+<%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <%@page import="board.*"%>
 <%@page import="student.*"%>
@@ -18,7 +19,8 @@
 	String comm_title = "";
 	String comm_content = "";
 	String comm_writer = "";
-	String comm_date = "";
+	Timestamp comm_date;
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 	int comm_num = 0;
 	int comm_hits = 0;
@@ -28,7 +30,7 @@
 		comm_num = board.getComm_num();
 		comm_title = board.getComm_title();
 		comm_content = board.getComm_content();
-		comm_date = board.getDate2();
+		comm_date = board.getComm_date();
 		comm_hits = board.getComm_hits();
 		comm_groupn = board.getComm_groupn();
 		comm_writer = board.getComm_writer();
@@ -65,7 +67,7 @@
 								<th class="menu">글번호</th>
 								<td width="300"><%=comm_num%></td>
 								<th class="menu">날짜</th>
-								<td><%=comm_date%></td>
+								<td><%=sdf.format(comm_date)%></td>
 							</tr>
 							<tr>
 								<th class="menu">작성자</th>
