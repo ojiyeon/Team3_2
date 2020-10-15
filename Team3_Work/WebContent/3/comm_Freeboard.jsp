@@ -1,4 +1,5 @@
 <!-- 자유게시판 -->
+<%@page import="myUtil.HanConv"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
@@ -41,25 +42,35 @@ footer {
 	<%
 	// 세션 가져오기
 	String stu_name = request.getParameter("stu_name"); 
-
-	// 검색어가 있을 경우, 값을 받아서 변수에 저장
-	String search_col = request.getParameter("search_col");
-	String search = request.getParameter("search");
-
-	// 페이징 처리
-	String pageNUM = request.getParameter("pageNUM");
-	if (pageNUM == null) {
-		pageNUM = "1";
-	}
-
 	BoardDBBean db = new BoardDBBean();
 
 	ArrayList<BoardBean> boardList = new ArrayList<BoardBean>();
 
-	boardList = db.getListBoard(search_col, search, 1, pageNUM);
+	// 페이징 처리
+	String pageNUM = request.getParameter("pageNUMF");
+	if (pageNUM == null) {
+		pageNUM = "1";
+	}
+	// 검색어가 있을 경우, 값을 받아서 변수에 저장
+	if(request.getParameter("search") != null){
+		String search_col = HanConv.toKor(request.getParameter("search_col"));
+		String search = HanConv.toKor(request.getParameter("search"));
+		boardList = db.getListBoard(search_col, search, 1, pageNUM);
+		
+		System.out.println(search_col);
+		System.out.println(search);
+				
+	}else{
+		
+		boardList = db.getListBoard("", "", 1, pageNUM);
+	}
 
-	String comm_title, comm_date2, comm_writer, comm_originalFileName, comm_systemFileName;
+
+
+
+	String comm_title, comm_writer, comm_originalFileName, comm_systemFileName;
 	Timestamp comm_date;
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 	int comm_index = 0;
 	int comm_num = 0;
@@ -106,7 +117,6 @@ footer {
 								comm_title = board.getComm_title();
 								comm_writer = board.getComm_writer();
 								comm_date = board.getComm_date();
-								comm_date2 = board.getDate2();
 								comm_hits = board.getComm_hits();
 								comm_level = board.getComm_level();
 								comm_originalFileName = board.getComm_originFileName();
@@ -137,7 +147,7 @@ footer {
 									<%
 									}
 									%>
-									<a href="comm_Show.jsp?comm_index=<%=comm_index%>&pageNUM=<%=pageNUM%>">&nbsp;<%=comm_title%></a>
+									<a href="comm_Show.jsp?comm_index=<%=comm_index%>&pageNUMF=<%=pageNUM%>">&nbsp;<%=comm_title%></a>
 									<%
 									if(count != 0){
 									%>
@@ -164,7 +174,7 @@ footer {
 									%>
 								</td>
 								<td><%=comm_writer%></td>
-								<td><%=comm_date2%></td>
+								<td><%=sdf.format(comm_date)%></td>
 								<td><%=comm_hits%></td>
 							</tr>
 							<%
@@ -180,7 +190,7 @@ footer {
 
 						<!-- 페이징 처리 -->
 						<br> <br>
-						<%=board.pageNumber(1, 4)%>
+						<%=board.pageNumberFree(4)%>
 
 
 

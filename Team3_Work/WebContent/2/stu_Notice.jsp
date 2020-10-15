@@ -1,4 +1,5 @@
 <!-- 학사공지 -->
+<%@page import="myUtil.HanConv"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
@@ -42,23 +43,30 @@ footer {
 <body>
 
    <%
-   // 검색어가 있을 경우, 값을 받아서 변수에 저장
-   String search_col = request.getParameter("search_col");
-   String search = request.getParameter("search");
-
-   // 페이징 처리
-   String pageNUM = request.getParameter("pageNUM");
-   if (pageNUM == null) {
-      pageNUM = "1";
-   }
-
-   ArrayList<BoardBean> boardList = new ArrayList<BoardBean>();
-
    BoardDBBean db = new BoardDBBean();
 
-   boardList = db.getListBoard(search_col, search, 4, pageNUM);
-   String comm_title, comm_date2, comm_originalFileName, comm_systemFileName;
+	ArrayList<BoardBean> boardList = new ArrayList<BoardBean>();
+
+	// 페이징 처리
+	String pageNUM = request.getParameter("pageNUMN");
+	if (pageNUM == null) {
+		pageNUM = "1";
+	}
+	// 검색어가 있을 경우, 값을 받아서 변수에 저장
+	if(request.getParameter("search") != null){
+		String search_col = HanConv.toKor(request.getParameter("search_col"));
+		String search = HanConv.toKor(request.getParameter("search"));
+		boardList = db.getListBoard(search_col, search, 4, pageNUM);
+		
+	}else{
+		
+		boardList = db.getListBoard("", "", 4, pageNUM);
+	}
+
+
+   String comm_title, comm_originalFileName, comm_systemFileName;
    Timestamp comm_date;
+   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
    
    int comm_index = 0;
    int comm_num = 0;
@@ -93,7 +101,6 @@ footer {
                         comm_groupn = board.getComm_groupn();
                         comm_title = board.getComm_title();
                         comm_date = board.getComm_date();
-                        comm_date2 = board.getDate2();
                         comm_hits = board.getComm_hits();
                         comm_originalFileName = board.getComm_originFileName();
                         comm_systemFileName = board.getComm_systemFileName();
@@ -128,7 +135,7 @@ footer {
                            %>
                         </td>
 
-                        <td><%=comm_date2%></td>
+                        <td><%=sdf.format(comm_date)%></td>
                         <td><%=comm_hits%></td>
                      </tr>
                      <%
@@ -138,7 +145,7 @@ footer {
                   </table>
                   <!-- 페이징 처리 -->
                   <br> <br>
-                  <%=board.pageNumber(4, 4)%>
+                  <%=board.pageNumberNotice(4)%>
 
                   <!-- 검색 -->
                   <form action="stu_Notice.jsp" method="post" name="search_frm">

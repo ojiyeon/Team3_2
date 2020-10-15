@@ -1,4 +1,5 @@
 <!-- 게시글 조회 -->
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.io.File"%>
 <%@page import="java.util.StringTokenizer"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
@@ -11,7 +12,7 @@
    int commindex = Integer.parseInt(request.getParameter("comm_index")); 
    
    // 있던 페이지로 돌아갈 수 있도록 pageNUM 받아옴
-   String pageNUM = request.getParameter("pageNUM");
+   String pageNUM = request.getParameter("pageNUMF");
    System.out.println("pageNUM >> " + pageNUM);
 
    // 세션정보 받아와서 id에 저장
@@ -32,15 +33,16 @@
    String comm_title = "";
    String comm_content = "";
    String comm_writer = "";
-   String comm_date = "";
    String comm_originalFileName = null;
    String comm_systemFileName = null;
    
+   Timestamp comm_date;
    int comm_index = 0;
    int comm_groupn = 0;
    int comm_num = 0;
    int comm_hits = 0;
    int comm_stu_id = 0;
+   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
    // board 인스턴스가 null이 아니라면 정보를 가져와서 변수에 저장
    if (board != null) { 
@@ -48,11 +50,11 @@
       comm_num = board.getComm_num();
       comm_title = board.getComm_title();
       comm_content = board.getComm_content();
-      comm_date = board.getDate2();
       comm_hits = board.getComm_hits();
       comm_groupn = board.getComm_groupn();
       comm_writer = board.getComm_writer();
       comm_stu_id = board.getComm_stu_id();
+      comm_date = board.getComm_date();
       if(board.getComm_originFileName() != null){
       	comm_originalFileName = board.getComm_originFileName();
       	comm_systemFileName = board.getComm_systemFileName();
@@ -101,7 +103,7 @@
                      <th class="menu">글번호</th>
                      <td width="300"><%=comm_num%></td>
                      <th class="menu">날짜</th>
-                     <td><%=comm_date%></td>
+                     <td><%=sdf.format(comm_date)%></td>
                   </tr>
                   <tr>
                      <th class="menu">작성자</th>
@@ -277,11 +279,11 @@
                <%
                   String forwardFile = "";
                   if(comm_groupn == 1){
-                     forwardFile = "location.href='comm_Freeboard.jsp?pageNUM=" + pageNUM + "';";
+                     forwardFile = "location.href='comm_Freeboard.jsp?pageNUMF=" + pageNUM + "';";
                   }else if(comm_groupn == 2 || comm_groupn == 3){
-                     forwardFile = "location.href='comm_Q_And_A.jsp?pageNUM=" + pageNUM + "';";                     
+                     forwardFile = "location.href='comm_Q_And_A.jsp?pageNUMQ=" + pageNUM + "';";                     
                   }else{
-                     forwardFile = "location.href='../2/stu_Notice.jsp?pageNUM=" + pageNUM + "';";                     
+                     forwardFile = "location.href='../2/stu_Notice.jsp?pageNUMN=" + pageNUM + "';";                     
                   }
                %>
             

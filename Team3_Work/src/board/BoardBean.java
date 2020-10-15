@@ -12,72 +12,101 @@ public class BoardBean {
 	private String comm_writer;
 	private String comm_content;
 	private int comm_hits;
-	private String date2;
 	private int comm_stu_id;
-	private int comm_ref = 0; // 占쏙옙 占쌓뤄옙 占쏙옙호 占시뤄옙
-	private int comm_step = 0; // 占쏙옙 占쏙옙치
-	private int comm_level = 0; // 占썰변 占쏙옙占쏙옙
+	private int comm_ref = 0; // 글 그룹 번호 컬럼
+	private int comm_step = 0; // 글 위치
+	private int comm_level = 0; // 답변 순위
 	private String comm_originFileName;
 	private String comm_systemFileName;
 	
-	public static int pageSize = 10; // 占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙쨉占� 占쌉시뱄옙 占쏙옙占쏙옙
-	public static int pagecount = 1; // 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙
-	public static int pageNUM = 1; // 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙
-	
-	// 占쏙옙占쏙옙징 처占쏙옙
-	public static String pageNumber(int comm_groupn, int limit) {
-		String str = "";
-		int temp = (pageNUM - 1) % limit;
-		int startPage = pageNUM - temp;
+	public static int pagesize = 10; // 한 페이지에 출력될 게시물 갯수
+	public static int pagecountF = 1;
+	public static int pageNUMF = 1;
 
-		if (comm_groupn == 1) {
-			if ((startPage - limit) > 0) {
-				str += "<a href='comm_Freeboard.jsp?pageNUM=" + (startPage - 1) + "'>[占쏙옙占쏙옙]</a>&nbsp;&nbsp;";
+	public static int pagecountQ = 1;
+	public static int pageNUMQ = 1;
+
+	public static int pagecountN = 1;
+	public static int pageNUMN = 1;
+
+	public static String pageNumberFree(int limit) {
+		String str="";
+		int temp=(pageNUMF-1) % limit;
+		int startPage = pageNUMF - temp;
+		
+		if((startPage - limit) > 0) {
+			str = "<a href='comm_Freeboard.jsp?pageNUMF="+(startPage-1)+"'>[이전]</a>&nbsp;&nbsp;";
+		}
+		
+		for(int i=startPage; i<(startPage+limit); i++) {
+			if(i == pageNUMF) {
+				str += "["+i+"]&nbsp;&nbsp;";
+			}else {
+				str += "<a href='comm_Freeboard.jsp?pageNUMF="+i+"'>["+i+"]</a>&nbsp;&nbsp;";
 			}
-			for (int i = startPage; i < (startPage + limit); i++) {
-				if (i == pageNUM) {
-					str += "[" + i + "]&nbsp;&nbsp;";
-				} else {
-					str += "<a href='comm_Freeboard.jsp?pageNUM=" + i + "'>[" + i + "]</a>&nbsp;&nbsp;";
-				}
-				if (i >= pagecount)
-					break;
+			
+			if(i >= pagecountF) break;
+		}
+		
+		if ((startPage+limit) <= pagecountF) {
+			str += "<a href='comm_Freeboard.jsp?pageNUMF="+(startPage+limit)
+					+"'>[다음]</a>";
+		}
+		return str;
+	}
+	
+	public static String pageNumberqANDa(int limit) {
+		String str="";
+		int temp=(pageNUMQ-1) % limit;
+		int startPage = pageNUMQ - temp;
+
+		if((startPage - limit) > 0) {
+			str = "<a href='comm_Q_And_A.jsp?pageNUMQ="+(startPage-1)
+				+"'>[이전]</a>&nbsp;&nbsp;";
+		}
+		
+		for(int i=startPage; i<(startPage+limit); i++) {
+			if(i == pageNUMQ) {
+				str += "["+i+"]&nbsp;&nbsp;";
+			}else {
+				str += "<a href='comm_Q_And_A.jsp?pageNUMQ="+i
+						+"'>["+i+"]</a>&nbsp;&nbsp;";
 			}
-			if ((startPage + limit) <= pagecount) {
-				str += "<a href='comm_Freeboard.jsp?pageNUM=" + (startPage + limit) + "'>[占쏙옙占쏙옙]</a>&nbsp;&nbsp;";
+			
+			if(i >= pagecountQ) break;
+		}
+		
+		if ((startPage+limit) <= pagecountQ) {
+			str += "<a href='comm_Q_And_A.jsp?pageNUMQ="+(startPage+limit)
+					+"'>[다음]</a>";
+		}
+		return str;
+	}
+	
+	public static String pageNumberNotice(int limit) {
+		String str="";
+		int temp=(pageNUMN-1) % limit;
+		int startPage = pageNUMN - temp;
+	
+		if((startPage - limit) > 0) {
+			str = "<a href='stu_Notice.jsp?pageNUMN="+(startPage-1)
+				+"'>[이전]</a>&nbsp;&nbsp;";
+		}
+		
+		for(int i=startPage; i<(startPage+limit); i++) {
+			if(i == pageNUMN) {
+				str += "["+i+"]&nbsp;&nbsp;";
+			}else {
+				str += "<a href='stu_Notice.jsp?pageNUMN="+i
+						+"'>["+i+"]</a>&nbsp;&nbsp;";
 			}
-		}else if (comm_groupn == 2 || comm_groupn == 3) {
-			if ((startPage - limit) > 0) {
-				str += "<a href='comm_Q_And_A.jsp?pageNUM=" + (startPage - 1) + "'>[占쏙옙占쏙옙]</a>&nbsp;&nbsp;";
-			}
-			for (int i = startPage; i < (startPage + limit); i++) {
-				if (i == pageNUM) {
-					str += "[" + i + "]&nbsp;&nbsp;";
-				} else {
-					str += "<a href='comm_Q_And_A.jsp?pageNUM=" + i + "'>[" + i + "]</a>&nbsp;&nbsp;";
-				}
-				if (i >= pagecount)
-					break;
-			}
-			if ((startPage + limit) <= pagecount) {
-				str += "<a href='comm_Q_And_A.jsp?pageNUM=" + (startPage + limit) + "'>[占쏙옙占쏙옙]</a>&nbsp;&nbsp;";
-			}
-		}else if (comm_groupn == 4) {
-			if ((startPage - limit) > 0) {
-				str += "<a href='stu_Notice.jsp?pageNUM=" + (startPage - 1) + "'>[占쏙옙占쏙옙]</a>&nbsp;&nbsp;";
-			}
-			for (int i = startPage; i < (startPage + limit); i++) {
-				if (i == pageNUM) {
-					str += "[" + i + "]&nbsp;&nbsp;";
-				} else {
-					str += "<a href='stu_Notice.jsp?pageNUM=" + i + "'>[" + i + "]</a>&nbsp;&nbsp;";
-				}
-				if (i >= pagecount)
-					break;
-			}
-			if ((startPage + limit) <= pagecount) {
-				str += "<a href='stu_Notice.jsp?pageNUM=" + (startPage + limit) + "'>[占쏙옙占쏙옙]</a>&nbsp;&nbsp;";
-			}
+			
+			if(i >= pagecountN) break;
+		}
+		
+		if ((startPage+limit) <= pagecountN) {
+			str += "<a href='stu_Notice.jsp?pageNUMN="+(startPage+limit)
+					+"'>[다음]</a>";
 		}
 		return str;
 	}
@@ -87,12 +116,12 @@ public class BoardBean {
 		super();
 	}
 	
+	
 	public BoardBean(String comm_originFileName, String comm_systemFileName) {
 		this.comm_originFileName = comm_originFileName;
 		this.comm_systemFileName = comm_systemFileName;
 	}
 
-	
 	public int getComm_index() {
 		return comm_index;
 	}
@@ -142,12 +171,6 @@ public class BoardBean {
 	}
 	public void setComm_hits(int comm_hits) {
 		this.comm_hits = comm_hits;
-	}
-	public String getDate2() {
-		return date2;
-	}
-	public void setDate2(String date2) {
-		this.date2 = date2;
 	}
 
 	public int getComm_stu_id() {

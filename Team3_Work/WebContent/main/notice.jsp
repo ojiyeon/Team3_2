@@ -1,3 +1,4 @@
+<%@page import="myUtil.HanConv"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="student.StudentDBBean"%>
 <%@page import="schedule.ScheduleBean"%>
@@ -93,26 +94,34 @@ table {
 </head>
 <body>
    <%
-      BoardDBBean db = new BoardDBBean();
+// 세션 가져오기
+	String stu_name = request.getParameter("stu_name"); 
+	BoardDBBean db = new BoardDBBean();
 
-   String search_col = request.getParameter("select_col");
-   String search = request.getParameter("search");
+	ArrayList<BoardBean> boardList = new ArrayList<BoardBean>();
 
-   ArrayList<BoardBean> noticeList = new ArrayList<BoardBean>();
+	// 페이징 처리
+	String pageNUM = request.getParameter("pageNUMN");
+	if (pageNUM == null) {
+		pageNUM = "1";
+	}
+	// 검색어가 있을 경우, 값을 받아서 변수에 저장
+	if(request.getParameter("search") != null){
+		String search_col = HanConv.toKor(request.getParameter("search_col"));
+		String search = HanConv.toKor(request.getParameter("search"));
+		boardList = db.getListBoard(search_col, search, 4, pageNUM);
+		
+	}else{
+		
+		boardList = db.getListBoard("", "", 4, pageNUM);
+	}
 
-   String pageNUM = request.getParameter("pageNUM");
-   if (pageNUM == null) {
-      pageNUM = "1";
-   }
 
-   noticeList = db.getListBoard(search_col, search, 4, pageNUM);
 
-   String stu_name = (String) session.getAttribute("stu_name");
-
-   String comm_title, comm_date2;
+   String comm_title;
 
    Timestamp comm_date;
-
+   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
    int comm_index = 0;
    int comm_groupn = 0;
    int comm_step = 0;
@@ -128,13 +137,12 @@ table {
                <h2>학사 공지</h2>
 
                <%
-                  for (int i = 0; i < 8; i++) { // 5개까지만(공지는 답댓 기능이 없어서 단순 for문으로 처리)
+                  for (int i = 0; i < 7; i++) { // 5개까지만(공지는 답댓 기능이 없어서 단순 for문으로 처리)
 
-                  board = noticeList.get(i);
+                  board = boardList.get(i);
                   comm_index = board.getComm_index();
                   comm_groupn = board.getComm_groupn();
                   comm_title = board.getComm_title();
-                  comm_date2 = board.getDate2();
                   comm_date = board.getComm_date();
 
                   SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
@@ -155,7 +163,7 @@ table {
                       }
                    %>
                   <%=comm_title%></span>
-                        <p><%=comm_date2%></p> 
+                        <p><%=sdf.format(comm_date)%></p> 
                      </a>
                      </li>
                   <%

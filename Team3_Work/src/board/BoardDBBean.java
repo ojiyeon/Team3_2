@@ -3,6 +3,7 @@ package board;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import javax.naming.Context;
@@ -161,10 +162,9 @@ public class BoardDBBean {
 	// 글 목록 조회
 	public ArrayList<BoardBean> getListBoard(String col, String word, int comm_groupn, String pageNumber) { // 제네릭은
 																											// 파일파라미터
-																									// 라고도 함
-		
+
 		Connection con = null;
-		PreparedStatement pstmt = null;
+		Statement stmt = null;
 		ResultSet rs = null;
 		ResultSet pageset = null;
 
@@ -174,172 +174,70 @@ public class BoardDBBean {
 		ArrayList<BoardBean> boardList = new ArrayList<BoardBean>();
 
 		String sql = "";
-
+			if(col.equals("search_title")) {
+				word = " and comm_title like '%" + word + "%'";
+			}else if(col.equals("search_content")) {
+				word = " and comm_content like '%" + word + "%'";
+			}
 		try {
 			con = getConnection();
-
-			// 검색
-			if (col != null || word != null) {
-				if (col.equals("search_title")) { // 제목으로 검색
-					if (comm_groupn == 2 || comm_groupn == 3) { // 게시판 번호가 2, 3이면, 2,3번 그룹에 해당하는 게시글 번호 카운트
-						sql = "select count(comm_num) from community where comm_title like ? and comm_groupn=2 or comm_groupn=3";
-						pstmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
-								ResultSet.CONCUR_UPDATABLE);
-						pstmt.setString(1, "%" + HanConv.toKor(word) + "%");
-					} else { // 그게 아니면
-						if (comm_groupn == 1) {
-							sql = "select count(comm_num) from community where comm_title like ? and comm_groupn=1";
-							pstmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
-									ResultSet.CONCUR_UPDATABLE);
-							pstmt.setString(1, "%" + HanConv.toKor(word) + "%");
-						} else {
-							sql = "select count(comm_num) from community where comm_title like ? and comm_groupn=4";
-							pstmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
-									ResultSet.CONCUR_UPDATABLE);
-							pstmt.setString(1, "%" + HanConv.toKor(word) + "%");
-						}
-					}
-
-				} else if (col.equals("search_content")) { // 내용으로 검색
-					if (comm_groupn == 2 || comm_groupn == 3) {
-						sql = "select count(comm_num) from community where comm_content like ? and comm_groupn=2 or comm_groupn=3";
-						pstmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
-								ResultSet.CONCUR_UPDATABLE);
-						pstmt.setString(1, "%" + HanConv.toKor(word) + "%");
-					} else {
-						if (comm_groupn == 1) {
-							sql = "select count(comm_num) from community where comm_content like ? and comm_groupn=1";
-							pstmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
-									ResultSet.CONCUR_UPDATABLE);
-							pstmt.setString(1, "%" + HanConv.toKor(word) + "%");
-						} else {
-							sql = "select count(comm_num) from community where comm_content like ? and comm_groupn=4";
-							pstmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
-									ResultSet.CONCUR_UPDATABLE);
-							pstmt.setString(1, "%" + HanConv.toKor(word) + "%");
-						}
-					}
-				}
-				// 페이징 처리
-
-				pageset = pstmt.executeQuery();
-
-				if (pageset.next()) {
-					dbcount = pageset.getInt(1);
-					pageset.close();
-				}
-				if (dbcount % BoardBean.pageSize == 0) {
-					BoardBean.pagecount = dbcount / (BoardBean.pageSize);
-				} else {
-					BoardBean.pagecount = dbcount / (BoardBean.pageSize) + 1;
-				}
-
-				if (pageNumber != null) {
-					BoardBean.pageNUM = Integer.parseInt(pageNumber);
-					absolutepage = (BoardBean.pageNUM - 1) * BoardBean.pageSize + 1; // 페이지의 첫번째 해당되는 페이지
-				}
-
-				rs = pstmt.executeQuery();
-
-				if (col.equals("search_title")) { // 제목으로 검색
-					if (comm_groupn == 2) {
-						sql = "select a.*, to_char(comm_date, 'YYYY-MM-DD hh24:mi') date2 from community a where (comm_groupn=2 or comm_groupn=3) and comm_title like ? order by comm_ref desc, comm_step asc";
-						pstmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
-								ResultSet.CONCUR_UPDATABLE);
-						pstmt.setString(1, "%" + HanConv.toKor(word) + "%");
-						rs = pstmt.executeQuery();
-					} else if (comm_groupn == 1) {
-						sql = "select a.*, to_char(comm_date, 'YYYY-MM-DD hh24:mi') date2 from community a where comm_groupn=1 and comm_title like ? order by comm_ref desc, comm_step asc";
-						pstmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
-								ResultSet.CONCUR_UPDATABLE);
-						pstmt.setString(1, "%" + HanConv.toKor(word) + "%");
-						rs = pstmt.executeQuery();
-					} else if (comm_groupn == 4) {
-						sql = "select a.*, to_char(comm_date, 'YYYY-MM-DD hh24:mi') date2 from community a where comm_groupn=4 and comm_title like ? order by comm_ref desc, comm_step asc";
-						pstmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
-								ResultSet.CONCUR_UPDATABLE);
-						pstmt.setString(1, "%" + HanConv.toKor(word) + "%");
-						rs = pstmt.executeQuery();
-					}
-				} else if (col.equals("search_content")) { // 내용으로 검색
-					if (comm_groupn == 2) {
-						sql = "select a.*, to_char(comm_date, 'YYYY-MM-DD hh24:mi') date2 from community a where (comm_groupn=2 or comm_groupn=3) and comm_content like ? order by comm_ref desc, comm_step asc";
-						pstmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
-								ResultSet.CONCUR_UPDATABLE);
-						pstmt.setString(1, "%" + HanConv.toKor(word) + "%");
-						rs = pstmt.executeQuery();
-					} else if (comm_groupn == 1) {
-						sql = "select a.*, to_char(comm_date, 'YYYY-MM-DD hh24:mi') date2 from community a where comm_groupn=1 and comm_content like ? order by comm_ref desc, comm_step asc";
-						pstmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
-								ResultSet.CONCUR_UPDATABLE);
-						pstmt.setString(1, "%" + HanConv.toKor(word) + "%");
-						rs = pstmt.executeQuery();
-					} else {
-						sql = "select a.*, to_char(comm_date, 'YYYY-MM-DD hh24:mi') date2 from community a where comm_groupn=4 and comm_content like ? order by comm_ref desc, comm_step asc";
-						pstmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
-								ResultSet.CONCUR_UPDATABLE);
-						pstmt.setString(1, "%" + HanConv.toKor(word) + "%");
-						rs = pstmt.executeQuery();
-					}
-				}
-
-				// 검색이 아닐 경우
-			} else {
-				// 페이징 처리
-				if (comm_groupn == 2 || comm_groupn == 3) {
-					sql = "select count(comm_num) from community where comm_groupn=2 or comm_groupn=3";
-					pstmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-					// TYPE_SCROLL_SENSITIVE : 스크롤하면서 페이징 처리 / CONCUR_UPDATABLE : 커서 단위로 행을 업데이트
-				} else {
-					if (comm_groupn == 1) {
-						sql = "select count(comm_num) from community where comm_groupn=1";
-						pstmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
-								ResultSet.CONCUR_UPDATABLE);
-					} else {
-						sql = "select count(comm_num) from community where comm_groupn=4";
-						pstmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
-								ResultSet.CONCUR_UPDATABLE);
-						// TYPE_SCROLL_SENSITIVE : 스크롤하면서 페이징 처리 / CONCUR_UPDATABLE : 커서 단위로 행을 업데이트
-					}
-				}
-
-				pageset = pstmt.executeQuery();
-
-				if (pageset.next()) {
-					dbcount = pageset.getInt(1);
-					pageset.close();
-				}
-				if (dbcount % BoardBean.pageSize == 0) {
-					BoardBean.pagecount = dbcount / (BoardBean.pageSize);
-				} else {
-					BoardBean.pagecount = dbcount / (BoardBean.pageSize) + 1;
-				}
-
-				if (pageNumber != null) {
-					BoardBean.pageNUM = Integer.parseInt(pageNumber);
-					absolutepage = (BoardBean.pageNUM - 1) * BoardBean.pageSize + 1; // 페이지의 첫번째 해당되는 페이지
-				}
-				pstmt.close();
-
-				if (comm_groupn == 2) {
-					sql = "select a.*, to_char(comm_date,'YYYY-MM-DD hh24:mi') date2 from community a where comm_groupn=2 or comm_groupn=3 order by comm_ref desc, comm_step asc";
-					pstmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-					rs = pstmt.executeQuery();
-				} else if (comm_groupn == 1) {
-					sql = "select a.*, to_char(comm_date,'YYYY-MM-DD hh24:mi') date2 from community a where comm_groupn=1 order by comm_ref desc, comm_step asc";
-					pstmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-					rs = pstmt.executeQuery();
-				} else if (comm_groupn == 4) {
-					sql = "select a.*, to_char(comm_date,'YYYY-MM-DD hh24:mi') date2 from community a where comm_groupn=4 order by comm_ref desc, comm_step asc";
-					pstmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-					rs = pstmt.executeQuery();
+			stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			
+			if(comm_groupn == 2) {
+				pageset = stmt.executeQuery("select count(*) from community where comm_groupn in (2,3)" + word);
+			}else {
+				pageset = stmt.executeQuery("select count(*) from community where comm_groupn=" + comm_groupn + word);
+			}			
+			
+			if(pageset.next()) {
+				dbcount = pageset.getInt(1);
+				pageset.close();
+			}
+			
+			if(dbcount % BoardBean.pagesize == 0) {
+				if(comm_groupn == 1)
+					BoardBean.pagecountF = dbcount / (BoardBean.pagesize);
+				else if(comm_groupn == 2 || comm_groupn == 3)
+					BoardBean.pagecountQ = dbcount / (BoardBean.pagesize);				
+				else if(comm_groupn == 4)
+					BoardBean.pagecountN = dbcount / (BoardBean.pagesize);
+			}else {
+				if(comm_groupn == 1)
+					BoardBean.pagecountF = dbcount / (BoardBean.pagesize)+1;
+				else if(comm_groupn == 2 || comm_groupn == 3)
+					BoardBean.pagecountQ = dbcount / (BoardBean.pagesize)+1;				
+				else if(comm_groupn == 4)
+					BoardBean.pagecountN = dbcount / (BoardBean.pagesize)+1;
+			}
+			
+			if(pageNumber != null) {
+				if(comm_groupn == 1) {
+					BoardBean.pageNUMF = Integer.parseInt(pageNumber);
+					absolutepage=(BoardBean.pageNUMF-1) 
+							* BoardBean.pagesize+1;
+				}else if(comm_groupn == 2 || comm_groupn == 3) {
+					BoardBean.pageNUMQ = Integer.parseInt(pageNumber);
+					absolutepage=(BoardBean.pageNUMQ-1) 
+							* BoardBean.pagesize+1;
+				}else if(comm_groupn == 4) {
+					BoardBean.pageNUMN = Integer.parseInt(pageNumber);
+					absolutepage=(BoardBean.pageNUMN-1) 
+							* BoardBean.pagesize+1;
 				}
 			}
+
+			if(comm_groupn == 2) {
+				sql = "SELECT C.*, CNT.CONT FROM COMMUNITY C LEFT JOIN (SELECT CMT_INDEX, COUNT(*) CONT FROM COMMENTS GROUP BY CMT_INDEX) CNT ON CNT.CMT_INDEX = C.COMM_INDEX WHERE C.COMM_GROUPN IN (2,3)"+ word +" ORDER BY COMM_REF DESC, COMM_STEP ASC";
+			}else {
+				sql = "SELECT C.*, CNT.CONT FROM COMMUNITY C LEFT JOIN (SELECT CMT_INDEX, COUNT(*) CONT FROM COMMENTS GROUP BY CMT_INDEX) CNT ON CNT.CMT_INDEX = C.COMM_INDEX WHERE C.COMM_GROUPN = " + comm_groupn + word + " ORDER BY COMM_REF DESC, COMM_STEP ASC";
+			}
+			rs = stmt.executeQuery(sql);
+				
 			if (rs.next()) {
 				rs.absolute(absolutepage);
 				int count = 0;
 
-				while (count < BoardBean.pageSize) {
+				while (count < BoardBean.pagesize) {
 					BoardBean board = new BoardBean();
 					board.setComm_index(rs.getInt(1));
 					board.setComm_num(rs.getInt(2));
@@ -355,7 +253,6 @@ public class BoardDBBean {
 					board.setComm_ref(rs.getInt(12));
 					board.setComm_originFileName(rs.getString(13));
 					board.setComm_systemFileName(rs.getString(14));
-					board.setDate2(rs.getString(15));
 
 					boardList.add(board);
 
@@ -378,8 +275,8 @@ public class BoardDBBean {
 				if (rs != null) {
 					rs.close();
 				}
-				if (pstmt != null) {
-					pstmt.close();
+				if (stmt != null) {
+					stmt.close();
 				}
 				if (con != null) {
 					con.close();
@@ -433,7 +330,6 @@ public class BoardDBBean {
 				board.setComm_originFileName(rs.getString(13));
 				board.setComm_systemFileName(rs.getString(14));
 
-				board.setDate2(rs.getString(4));
 			}
 
 		} catch (Exception e) {
