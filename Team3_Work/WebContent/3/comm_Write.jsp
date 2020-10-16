@@ -85,7 +85,7 @@
 						%>
 							<tr height="40">
 								<td align="left">
-									<select name="qanda">
+									<select name="comm_groupn">
 										<option>문의 종류를 선택하세요</option>
 										<option value="2">[학사관련 문의]</option>
 										<option value="3">[학적관련 문의]</option>

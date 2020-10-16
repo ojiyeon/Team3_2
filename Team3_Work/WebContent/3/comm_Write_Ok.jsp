@@ -1,3 +1,4 @@
+<%@page import="sun.invoke.empty.Empty"%>
 <%@page import="com.oreilly.servlet.MultipartRequest"%>
 <%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
@@ -56,26 +57,11 @@
 		
 		int comm_index = 0, comm_num = 0;
 		int comm_ref=1, comm_step=0, comm_level=0;
+		int qanda = 0;
 		
 		String uploadPath = "C:/upload/";
 		
-	// 게시판 종류로 조건 걸어서 게시판번호 저장
-	// 넘어온 게시판 종류 값에 따라 1 이면 자유게시판
-	if (comm_groupn == 1) { 
-		board.setComm_groupn(1);
-	
-	} else if (comm_groupn == 2) { // 2 이면 문의 게시판
-		// 문의 게시판 종류 받아옴
-		MultipartRequest multi = new MultipartRequest(request, uploadPath);
-		int qanda = Integer.parseInt(multi.getParameter("qanda")); 
-		
-		// 문의게시판에서 만약 qanda 가 2이면(select value 값) 학사
-		if (qanda == 2) { 
-			board.setComm_groupn(2);
-		} else {
-			board.setComm_groupn(3); // 문의게시판에서 만약 qanda 가 3이면(select value 값) 학적
-		}
-	}
+
 		Date date = new Date();
 		FileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);
@@ -85,7 +71,9 @@
 	     while (itr.hasNext()) {
 	          FileItem item = (FileItem) itr.next();
 	          if (item.isFormField()) {
-	        	  if(item.getFieldName().equals("comm_title")){
+	        	  if(item.getFieldName().equals("comm_groupn")){
+	        		  comm_groupn = Integer.parseInt(item.getString());
+	        	  }else if(item.getFieldName().equals("comm_title")){
 	        		  comm_title = HanConv.toKor(item.getString());
 	        	  }else if(item.getFieldName().equals("comm_content")){
 	        		  comm_content = HanConv.toKor(item.getString());
@@ -94,8 +82,6 @@
 	        		  comm_index = Integer.parseInt(item.getString());	
 	        	  }else if(item.getFieldName().equals("comm_num")){
 	        		  comm_num = Integer.parseInt(item.getString());	        		  
-	        	  }else if(item.getFieldName().equals("comm_groupn")){
-	        		  comm_groupn = Integer.parseInt(item.getString());	        		  
 	        	  }else if(item.getFieldName().equals("comm_ref")){
 	        		  comm_ref = Integer.parseInt(item.getString());
 	        	  }else if(item.getFieldName().equals("comm_step")){
@@ -136,6 +122,7 @@
 		
 		board.setComm_content(clob);
 		System.out.println(clob);
+		System.out.println("comm_groupn >> " + comm_groupn);
 		
 	
 
@@ -149,6 +136,8 @@
 	
 	// 그룹번호(게시글의 index값을 받아와서 저장)
 	board.setComm_ref(comm_ref); 
+	
+	board.setComm_groupn(comm_groupn);
 
 	// 답글일 경우 multi.getPara 로 받은 값들 저장
 	if (comm_level != 0) { 
