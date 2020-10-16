@@ -13,8 +13,8 @@
 
 <link href="../resource/css/bootstrap.min.css" rel="stylesheet">
 <link href="../resource/css/custom.css" rel="stylesheet">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="../resource/js/bootstrap.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+ --><script src="../resource/js/bootstrap.min.js"></script>
 <script>
 	$(document).ready(function() {
 		$("ul.submenu1 li a.j").hover(function() {
@@ -64,7 +64,6 @@
 						<li><a class="j" href="../2/year_Schedule_Rs.jsp">학사일정</a></li>
 					</ul></li>
 				<li><a href="../3/comm_Freeboard.jsp">자유게시판</a></li>
-
 
 				<li><a href="../3/comm_Q_And_A.jsp">학사관련문의</a></li>
 

@@ -6,14 +6,23 @@
 <head>
 <meta charset="EUC-KR">
 <title>Insert title here</title>
-  	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <link rel="stylesheet" href="../css/1_1.css" type="text/css" />
 <script type="text/javascript" src="../3/script.js" charset="utf-8"></script>
-
+<!-- 
+  	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <link href="../resource/css/bootstrap.min.css" rel="stylesheet">
 <link href="../resource/css/custom.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="../resource/js/bootstrap.min.js"></script>
+ -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
+<!--   	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<link href="../resource/css/bootstrap.min.css" rel="stylesheet">
+<link href="../resource/css/custom.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="../resource/js/bootstrap.min.js"></script> -->
 </head>
 <body>
 
@@ -68,40 +77,31 @@
 							<%
 								}
 							%>
-							<tr height="40">
+							<tr>
 								<td>
-									<input type="text" size="100" name="comm_title" value="<%=board.getComm_title()%>" />
+									<input type="text" size="150" name="comm_title" value="<%=board.getComm_title()%>" />
 								</td>
 							</tr>
-							<tr height="450">
-								<td>
-									<textarea class="textarea" rows="25" cols="100" name="comm_content"><%=board.getComm_content().replace("<br>", "\n")%></textarea>
-								</td>
-							</tr>
-							<tr height="40">
+							</table>
+									<textarea id="summernote" name="comm_content"><%=board.getComm_content().replace("<br>", "\n")%></textarea>
+								
 							<%
 								// 기존에 첨부한 파일이 있을 경우
 								if(board.getComm_originFileName() != null){
 							%>
-								<td>
 									기존 파일 : <%=board.getComm_originFileName() %>
 									&nbsp;&nbsp;&nbsp;&nbsp;<br>
 									<p>[새 파일 추가 시, 기존 파일은 삭제됩니다.]</p>
 									<input type="file" id="file" name="uploads" multiple/>							
-								</td>
 							<%
 								}else{
 									// 기존에 첨부한 파일이 없을 경우
 							%>
-								<td class="file">
-									<img alt="파일 아이콘" src="../css/file_icon.png" height="30">&nbsp;&nbsp;
 									<input type="file" id="file" name="uploads" multiple/>
-								</td>
 							<%
 								}
 							%>
-							</tr>
-						</table>
+							
 						<div id="selectedFileListWrap" class="table">
 	           			 <table id="selectedFileList" class="table table-bordered">
 	           			</table>
@@ -147,5 +147,16 @@ $(document).ready(function(){
     	}
     });
 });
+</script>
+<script>
+$(document).ready(function() {
+	  $('#summernote').summernote({
+		  height: 500,
+		  width: 1100,
+		  placeholder: '내용을 입력해주세요',
+	        disableResizeEditor: true
+		 
+	  });
+	});
 </script>
 </html>

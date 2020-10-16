@@ -5,19 +5,23 @@
 <jsp:useBean id="board" class="board.BoardBean" scope="page"></jsp:useBean>
 <jsp:setProperty property="*" name="board" />
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="EUC-KR">
 <title>글쓰기</title>
-  	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <link rel="stylesheet" href="../css/1_1.css" type="text/css" />
 <script type="text/javascript" src="../3/script.js" charset="utf-8"></script>
-
+<!-- 
+  	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <link href="../resource/css/bootstrap.min.css" rel="stylesheet">
 <link href="../resource/css/custom.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="../resource/js/bootstrap.min.js"></script>
+ -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
 </head>
 <body>
 	<jsp:include page="../main/menu.jsp"></jsp:include>
@@ -68,7 +72,7 @@
 				<input type="hidden" name="qanda" value="<%=comm_groupn %>">
 				
 					<div class="table">
-						<table class="table table-bordered" cellpadding="10" cellspacing="4" width="800" height="200">
+						<table class="table table-bordered" cellpadding="10" cellspacing="4" width="800" height="auto">
 						
 						<%
 							// 원글 작성일 경우
@@ -89,57 +93,50 @@
 								</td>
 						<%		
 								}
+							
 						%>
 							</tr>
 							<tr height="40">
 								<td>
-									<input type="text" size="100" name="comm_title" placeholder="제목을 입력하세요" />
+									<input type="text" size="150" name="comm_title" placeholder="제목을 입력하세요" />
 								</td>
 						<%
 							}else{
 								// 답글일 경우, 게시판종류와 상관없이 제목과 내용만 입력 가능하도록(groupn은 hidden 값으로 넘겨줌)
 						%>
 								<td>
-									<input type="text" size="100" name="comm_title" value="[Re] <%=comm_title %>" />
+									<input type="text" name="comm_title" size="150" value="[Re] <%=comm_title %>" />
 								</td>
 						<%
 							}
 						 %>
-							</tr>			
-							<tr height="450">
-								<td>
-									<textarea class="textarea" rows="25" cols="100" name="comm_content" placeholder="내용을 입력하세요"></textarea>
-								</td>
-							</tr>
-							<tr height="40">
-								<td class="file">
+							</table>
+								<textarea id="summernote" name="comm_content"></textarea>
 									<img alt="파일 아이콘" src="../css/file_icon.png" height="30">&nbsp;&nbsp;
-									<input type="file" id="file" name="uploads" multiple/>
-								</td>
-							</tr>
-						</table>
+								<input type="file" id="file" name="uploads" multiple/>
 					<div id="selectedFileListWrap" class="table">
 	           			 <table id="selectedFileList" class="table table-bordered">
 	           			</table>
 					</div>
 					</div>
 							
+								</div>
 
 					<!-- 글쓰기 버튼 -->
 					<p class="mbutton">
-						<input type="button" class="button" value="글쓰기" onclick="check_ok()" /> 
+						<input type="submit" class="button" value="글쓰기" /> 
 						&nbsp;&nbsp; 
 						<input type="reset" class="button" value="초기화" />
 					</p>
 				</form>
 				
-			</div>
 			<!-- <div id="tab-1" class="tab-content current"> END -->
 		</div>
 		<!-- <div class="container"> END -->
 	</div>
 	<!-- <div id="contents"> END -->
 </body>
+
 <script>
 $("#selectedFileListWrap").hide();
 $(document).ready(function(){
@@ -162,5 +159,18 @@ $(document).ready(function(){
     	}
     });
 });
+
+$(document).ready(function() {
+	  $('#summernote').summernote({
+		  height: 500,
+		  width: 1100,
+		  placeholder: '내용을 입력해주세요',
+	        disableResizeEditor: true
+		 
+	  });
+	});
+</script>
+<script>
+
 </script>
 </html>

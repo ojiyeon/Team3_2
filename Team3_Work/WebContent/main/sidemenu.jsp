@@ -11,7 +11,9 @@
 <script src="https://kit.fontawesome.com/9fe63ac50b.js"
 	crossorigin="anonymous"></script>
 <!--아이콘 사용하기 위한 스크립트-->
-<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<!-- <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+ -->
 <!--jquery CDN을 이용하는 방법-->
 <script>
 	$(document).ready(function() {
