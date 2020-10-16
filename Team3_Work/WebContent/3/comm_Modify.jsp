@@ -57,25 +57,26 @@
 				<input type="hidden" name="existing_sys_file" value="<%=board.getComm_systemFileName()%>">
 					<div class="table">
 						<table class="table table-bordered" cellpadding="10" cellspacing="4" width="800" height="auto">
+						
 							<%
 								if (comm_groupn == 1) {
 									// 자유게시판에서 글 쓸 경우 select 박스 안보임
 							%>
 
 							<%
-								} else if (comm_groupn == 2 || comm_groupn == 3) {
+								} else if (comm_groupn == 2) {
 							%>
-							<tr height="40">
+							<tr>
 								<td align="left">
-									<select name="comm_groupn">
-										<option>문의 종류를 선택하세요</option>
-										<option value="2">[학사 문의]</option>
-										<option value="3">[학적 문의]</option>
-									</select>
-								</td>
+										[학사 문의]
+							<%
+								}else if(comm_groupn == 3){
+							%>
+										[학적 문의]
 							<%
 								}
 							%>
+								</td>
 							</tr>
 							<tr>
 								<td>
@@ -102,10 +103,10 @@
 								}
 							%>
 							
+					</div>
 						<div id="selectedFileListWrap" class="table">
 	           			 <table id="selectedFileList" class="table table-bordered">
 	           			</table>
-					</div>
 					</div>
 
 					<!-- 수정 & 초기화 & 목록으로 버튼 -->
@@ -153,8 +154,9 @@ $(document).ready(function() {
 	  $('#summernote').summernote({
 		  height: 500,
 		  width: 1100,
-		  placeholder: '내용을 입력해주세요',
-	        disableResizeEditor: true
+		  placeholder: '<%=board.getComm_content()%>',
+	        disableResizeEditor: true,
+	      
 		 
 	  });
 	});
