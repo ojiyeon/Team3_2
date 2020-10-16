@@ -12,7 +12,7 @@
    int commindex = Integer.parseInt(request.getParameter("comm_index")); 
    
    // 있던 페이지로 돌아갈 수 있도록 pageNUM 받아옴
-   String pageNUM = request.getParameter("pageNUMF");
+   String pageNUM = request.getParameter("pageNUM");
    System.out.println("pageNUM >> " + pageNUM);
 
    // 세션정보 받아와서 id에 저장
@@ -279,11 +279,11 @@
                <%
                   String forwardFile = "";
                   if(comm_groupn == 1){
-                     forwardFile = "location.href='comm_Freeboard.jsp?pageNUMF=" + pageNUM + "';";
+                     forwardFile = "location.href='comm_Freeboard.jsp?pageNUM=" + pageNUM + "';";
                   }else if(comm_groupn == 2 || comm_groupn == 3){
-                     forwardFile = "location.href='comm_Q_And_A.jsp?pageNUMQ=" + pageNUM + "';";                     
+                     forwardFile = "location.href='comm_Q_And_A.jsp?pageNUM=" + pageNUM + "';";                     
                   }else{
-                     forwardFile = "location.href='../2/stu_Notice.jsp?pageNUMN=" + pageNUM + "';";                     
+                     forwardFile = "location.href='../2/stu_Notice.jsp?pageNUM=" + pageNUM + "';";                     
                   }
                %>
             

@@ -53,16 +53,34 @@
 		String comm_originFileName = "";
 		String comm_systemFileName = "";
 		
+		
 		int comm_index = 0, comm_num = 0;
 		int comm_ref=1, comm_step=0, comm_level=0;
 		
+		String uploadPath = "C:/upload/";
+		
+	// 게시판 종류로 조건 걸어서 게시판번호 저장
+	// 넘어온 게시판 종류 값에 따라 1 이면 자유게시판
+	if (comm_groupn == 1) { 
+		board.setComm_groupn(1);
+	
+	} else if (comm_groupn == 2) { // 2 이면 문의 게시판
+		// 문의 게시판 종류 받아옴
+		MultipartRequest multi = new MultipartRequest(request, uploadPath);
+		int qanda = Integer.parseInt(multi.getParameter("qanda")); 
+		
+		// 문의게시판에서 만약 qanda 가 2이면(select value 값) 학사
+		if (qanda == 2) { 
+			board.setComm_groupn(2);
+		} else {
+			board.setComm_groupn(3); // 문의게시판에서 만약 qanda 가 3이면(select value 값) 학적
+		}
+	}
 		Date date = new Date();
 		FileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		List items = upload.parseRequest(request);
 
-		String uploadPath = "C:/upload/";
-		
 		Iterator itr = items.iterator();
 	     while (itr.hasNext()) {
 	          FileItem item = (FileItem) itr.next();
@@ -105,24 +123,20 @@
 			board.setComm_systemFileName(comm_systemFileName);
 		}
 	    
-	
-	// 게시판 종류로 조건 걸어서 게시판번호 저장
-	// 넘어온 게시판 종류 값에 따라 1 이면 자유게시판
-	if (comm_groupn == 1) { 
-		board.setComm_groupn(1);
-	
-	} else if (comm_groupn == 2) { // 2 이면 문의 게시판
-		// 문의 게시판 종류 받아옴
-		MultipartRequest multi = new MultipartRequest(request, uploadPath);
-		int qanda = Integer.parseInt(multi.getParameter("qanda")); 
-		
-		// 문의게시판에서 만약 qanda 가 2이면(select value 값) 학사
-		if (qanda == 2) { 
-			board.setComm_groupn(2);
-		} else {
-			board.setComm_groupn(3); // 문의게시판에서 만약 qanda 가 3이면(select value 값) 학적
+		String clob = "";
+		for(int i=0; i< comm_content.length(); ){ 
+			i = i + 2500;
+			if(i > comm_content.length()){
+				clob += comm_content.substring((i-2500), comm_content.length()-1);
+				break;
+			}else{
+				clob += comm_content.substring((i-2500), i);			
+			}
 		}
-	}
+		
+		board.setComm_content(clob);
+		System.out.println(clob);
+		
 	
 
 	// 받아온 학생이름, 학번을 board 인스턴스에 저장
