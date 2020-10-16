@@ -154,7 +154,6 @@ $(document).ready(function() {
 	  $('#summernote').summernote({
 		  height: 500,
 		  width: 1100,
-		  placeholder: '<%=board.getComm_content()%>',
 	        disableResizeEditor: true,
 	      
 		 
