@@ -56,7 +56,7 @@
 				<input type="hidden" name="existing_file" value="<%=board.getComm_originFileName()%>">
 				<input type="hidden" name="existing_sys_file" value="<%=board.getComm_systemFileName()%>">
 					<div class="table">
-						<table class="table table-bordered" cellpadding="10" cellspacing="4" width="800" height="200">
+						<table class="table table-bordered" cellpadding="10" cellspacing="4" width="800" height="auto">
 							<%
 								if (comm_groupn == 1) {
 									// 자유게시판에서 글 쓸 경우 select 박스 안보임
