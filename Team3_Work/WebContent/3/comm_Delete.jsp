@@ -20,8 +20,9 @@
 	String comm_content = "";
 	String comm_writer = "";
 	Timestamp comm_date;
+	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
+	
 	int comm_num = 0;
 	int comm_hits = 0;
 	int comm_groupn = 0;

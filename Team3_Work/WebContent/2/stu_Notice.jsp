@@ -1,5 +1,4 @@
 <!-- 학사공지 -->
-<%@page import="myUtil.HanConv"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
@@ -53,9 +52,9 @@ footer {
 		pageNUM = "1";
 	}
 	// 검색어가 있을 경우, 값을 받아서 변수에 저장
-	if(request.getParameter("search") != null){
-		String search_col = HanConv.toKor(request.getParameter("search_col"));
-		String search = HanConv.toKor(request.getParameter("search"));
+	if(request.getParameter("search_content") != null){
+		String search_col = request.getParameter("search_col");
+		String search = request.getParameter("search");
 		boardList = db.getListBoard(search_col, search, 4, pageNUM);
 		
 	}else{
@@ -64,7 +63,7 @@ footer {
 	}
 
 
-   String comm_title, comm_originalFileName, comm_systemFileName;
+   String comm_title, comm_date2, comm_originalFileName, comm_systemFileName;
    Timestamp comm_date;
    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
    
@@ -112,7 +111,7 @@ footer {
                         if (comm_groupn == 4) {
                      %>
                      <tr class="off" onmouseover="this.className='on'" onmouseout="this.className='off'">
-                        <td><%=comm_num%></td>
+                        <td align="center"><%=comm_num%></td>
                         <td width="500" align="left">
                            <a href="../3/comm_Show.jsp?comm_index=<%=comm_index%>&pageNUM=<%=pageNUM%>">&nbsp;<%=comm_title%></a>
                            
@@ -135,8 +134,8 @@ footer {
                            %>
                         </td>
 
-                        <td><%=sdf.format(comm_date)%></td>
-                        <td><%=comm_hits%></td>
+                        <td align="center"><%=sdf.format(comm_date)%></td>
+                        <td align="center"><%=comm_hits%></td>
                      </tr>
                      <%
                         }
@@ -145,7 +144,7 @@ footer {
                   </table>
                   <!-- 페이징 처리 -->
                   <br> <br>
-                  <%=board.pageNumberNotice(4)%>
+                  <div align="center"><%=board.pageNumberNotice(4)%></div>
 
                   <!-- 검색 -->
                   <form action="stu_Notice.jsp" method="post" name="search_frm">

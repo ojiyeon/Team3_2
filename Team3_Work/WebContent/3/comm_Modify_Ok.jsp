@@ -87,29 +87,24 @@
 			board.setComm_systemFileName(comm_systemFileName);
 		}
 	
-	// 게시판 종류로 조건 걸기
-	// 넘어온 게시판 종류 값에 따라 1 이면 자유게시판
-	if (comm_groupn == 1) { 
-		board.setComm_groupn(1);
-
-	} else { 
-	// 2 이면 문의 게시판
-		// 문의 게시판 종류 판단
-		MultipartRequest multi = new MultipartRequest(request, uploadPath);
-		int qanda = Integer.parseInt(multi.getParameter("qanda")); 
-	
-		// 만약 qanda:select option value 가 2이면 => 학사
-		if (qanda == 2) { 
-			board.setComm_groupn(2);
-		} else {
-		// 만약 qanda:select option value 가 3이면 => 학적
-			board.setComm_groupn(3); 
+		String clob = "";
+		for(int i=0; i< comm_content.length(); ){ 
+			i = i + 2500;
+			if(i > comm_content.length()){
+				clob += comm_content.substring((i-2500), comm_content.length()-1);
+				break;
+			}else{
+				clob += comm_content.substring((i-2500), i);			
+			}
 		}
-	}
 
 	// 제목과 본문 인스턴스에 저장
 	board.setComm_title(comm_title);
-	board.setComm_content(comm_content);
+	board.setComm_content(clob);
+	System.out.println(clob);
+	System.out.println("comm_groupn >> " + comm_groupn);
+	
+
 
 	int re = db.editBoard(board);
 

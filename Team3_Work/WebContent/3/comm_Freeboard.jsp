@@ -131,7 +131,7 @@ footer {
 								if (comm_groupn == 1) {
 							%>
 							<tr class="off" onmouseover="this.className='on'" onmouseout="this.className='off'">
-								<td><%=comm_num%></td>
+								<td align="center"><%=comm_num%></td>
 								<td width="500" align="left">
 									<%
 										// 翠臂老 版快
@@ -173,9 +173,9 @@ footer {
 									}
 									%>
 								</td>
-								<td><%=comm_writer%></td>
-								<td><%=sdf.format(comm_date)%></td>
-								<td><%=comm_hits%></td>
+								<td align="center"><%=comm_writer%></td>
+								<td align="center"><%=sdf.format(comm_date)%></td>
+								<td align="center"><%=comm_hits%></td>
 							</tr>
 							<%
 								}
@@ -190,7 +190,7 @@ footer {
 
 						<!-- 其捞隆 贸府 -->
 						<br> <br>
-						<%=board.pageNumberFree(4)%>
+						<div align="center"><%=board.pageNumberFree(4)%></div>
 
 
 

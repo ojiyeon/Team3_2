@@ -67,16 +67,16 @@
 							%>
 							<tr height="40">
 								<td align="left">
-									<select name="qanda">
+									<select name="comm_groupn">
 										<option>문의 종류를 선택하세요</option>
 										<option value="2">[학사 문의]</option>
 										<option value="3">[학적 문의]</option>
 									</select>
 								</td>
-							</tr>
 							<%
 								}
 							%>
+							</tr>
 							<tr>
 								<td>
 									<input type="text" size="150" name="comm_title" value="<%=board.getComm_title()%>" />

@@ -69,6 +69,7 @@
 						
 						}
 				
+					}
 					if (comm_groupn == 1) {
 						out.print("<script>");
 						out.print("alert('정상적으로 삭제되었습니다.');");
@@ -82,7 +83,6 @@
 					}
 				
 				}
-			}
 			}
 		}
 		

@@ -57,7 +57,6 @@
 		
 		int comm_index = 0, comm_num = 0;
 		int comm_ref=1, comm_step=0, comm_level=0;
-		int qanda = 0;
 		
 		String uploadPath = "C:/upload/";
 		

@@ -123,8 +123,8 @@ footer {
 								if (comm_groupn == 2 || comm_groupn == 3) {
 							%>
 							<tr class="off" onmouseover="this.className='on'" onmouseout="this.className='off'">
-								<td><%=comm_num%></td>
-								<td>
+								<td align="center"><%=comm_num%></td>
+								<td align="center">
 									<%
 										if (comm_groupn == 2) {
 									%>
@@ -177,9 +177,9 @@ footer {
 									}
 									%>
 								</td>
-								<td><%=comm_writer%></td>
-								<td><%=sdf.format(comm_date)%></td>
-								<td><%=comm_hits%></td>
+								<td align="center"><%=comm_writer%></td>
+								<td align="center"><%=sdf.format(comm_date)%></td>
+								<td align="center"><%=comm_hits%></td>
 							</tr>
 							<%
 								}
@@ -194,7 +194,7 @@ footer {
 						
 						<!-- 페이징 처리 -->
 						<br> <br>
-						<%=board.pageNumberqANDa(4)%>
+						<div align="center"><%=board.pageNumberqANDa(4)%></div>
 
 						
 						<!-- 검색 -->
