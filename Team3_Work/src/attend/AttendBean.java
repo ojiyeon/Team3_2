@@ -7,17 +7,20 @@ public class AttendBean {
 	private int atd_stu_id;
 	private int atd_pro_id;
 	private int atd_year;
-	private int atd_grade; //학년
-	private int atd_semester; //학기
-	private Date atd_date; //출석일자
-	private String atd_state; //출석상태(출석,결석 등)
-	private String atd_remark; //비고란
+	private int atd_grade; 
+	private int atd_semester; 
+	private Date atd_date; 
+	//출석상태(출석,결석 등)
+	private String atd_state; 
+	//출결 비고사항
+	private String atd_remark; 
 	
 	public AttendBean(Date atd_date, String atd_state, String atd_remark) {
 		this.atd_date = atd_date;
 		this.atd_state = atd_state;
 		this.atd_remark = atd_remark;
 	}
+	
 	public AttendBean(int atd_subj_code, int atd_stu_id, int atd_pro_id, int atd_year, int atd_grade, int atd_semester,
 			Date atd_date, String atd_state, String atd_remark) {
 		this.atd_subj_code = atd_subj_code;

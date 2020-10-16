@@ -11,6 +11,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+	
 				<table style="width: 300px;"> 
 						<tr>
 							<th colspan="1">일자</th>
@@ -18,7 +19,7 @@
 							<th colspan="6">비고</th>
 						</tr>
 				<%
-						ArrayList<AttendBean> listatd = null;		
+						ArrayList<AttendBean> atdList = null;		
 						StudentDBBean student = StudentDBBean.getInstance();
 						
 						int stu_id2 = Integer.parseInt(request.getParameter("id"));
@@ -26,13 +27,13 @@
 						int stu_semester2 = Integer.parseInt(request.getParameter("semester"));
 						int stu_code2 = Integer.parseInt(request.getParameter("code"));
 						
-				
-						listatd= student.listAtd(stu_id2 , stu_grade2, stu_semester2 ,stu_code2);
+						
+						atdList= student.AtdView(stu_id2 , stu_grade2, stu_semester2 ,stu_code2);
 						
 					
 						int a=0, b=0, c=0, d=0;
-						for(int i=0; i<listatd.size(); i++){
-							AttendBean atd = listatd.get(i);
+						for(int i=0; i<atdList.size(); i++){
+							AttendBean atd = atdList.get(i);
 							
 							Date atd_date= atd.getAtd_date();
 							String atd_state= atd.getAtd_state();

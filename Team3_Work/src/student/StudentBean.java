@@ -8,23 +8,35 @@ public class StudentBean {
 	private String stu_name; 
 	private String stu_eng_name; 
 	private String stu_pwd; 
-	private Long stu_jumin; 
-	private int stu_state; // �к�(1: ���� / 2: ���� / 3: ���� / 4: ����)
+	private String stu_jumin;
+	
+	//학적상태(1: 재학/ 2: 졸업/ 3: 휴학/ 4: 자퇴)
+	private int stu_state; 
 	private int stu_major; 
 	private int stu_grade; 
-	private int stu_pro; // ��������(������ȣ)
+	
+	//학생 담당교수님 코드
+	private int stu_pro; 
+	// 학생의 학부
 	private String dept_name;
+	// 학생의 학과
 	private String dept_majorname;
 	
 	private String stu_tel; 
 	private String stu_emg_tel; 
 	private String stu_addr; 
-	private String stu_email; 
+	private String stu_email;
+	//수정을 위한 변수(@*.com)
+	private String mail2;
 	private Blob stu_img;
-	private String mail2;//수정을 위한 변수
-	private String num2;//수정을 위한 변수(핸드폰 중간번호)
-	private String num3;//수정을 위한 변수(핸드폰 끝번호)
+	
+	//수정을 위한 변수(핸드폰 중간번호)
+	private String num2;
+	//수정을 위한 변수(핸드폰 끝번호)
+	private String num3;
+	
 	private String detailAddr;
+	// 학생 담당교수님 성명
 	private String pro_name;
 	
 	public StudentBean() {
@@ -136,10 +148,11 @@ public class StudentBean {
 	public void setStu_pwd(String stu_pwd) {
 		this.stu_pwd = stu_pwd;
 	}
-	public Long getStu_jumin() {
+	
+	public String getStu_jumin() {
 		return stu_jumin;
 	}
-	public void setStu_jumin(Long stu_jumin) {
+	public void setStu_jumin(String stu_jumin) {
 		this.stu_jumin = stu_jumin;
 	}
 	public int getStu_state() {

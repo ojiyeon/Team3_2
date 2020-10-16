@@ -43,7 +43,7 @@
 					<p class="stunum">ÇÐ¹ø : <%=stu_b.getStu_id() %></p>
 				</div>
 			</div>
-				<div class="logout_btn"><a href="../main/logOut.jsp" style="color: #fff;">logout</a></div>
+				<a href="../main/logOut.jsp" style="color: #fff;"><div class="logout_btn">logout</div></a>
 			<!-- ================== profile_wrap END  =============== ===-->
 			<ul class="sidemenu">
 				<li><a class="t"> <span class="icon"><i

@@ -16,9 +16,20 @@
 <%
 	int id =(Integer)session.getAttribute("uid");
 	stu.setStu_id(id);
-	
 	int size = 1024*1024*10; //저장 가능한 파일 크기
-	String path = application.getRealPath("/upload/");
+	
+	//upload폴더 자동 생성 코드
+	 File Folder = new File("C:\\upload");
+    if (!Folder.exists()) { //폴더가 존재하지 않으면
+      try{
+          Folder.mkdir(); //폴더 생성합니다.
+       } catch(Exception e){
+          e.getStackTrace();
+       }
+   	}
+   
+   //자동생성된 폴더의 경로를 path변수에 넣음
+	String path = Folder.getPath();
 	String encoding = "euc-kr";
 	
 	MultipartRequest multi = new MultipartRequest(request, path, size, encoding, new DefaultFileRenamePolicy());
@@ -41,6 +52,7 @@
 	String name = multi.getFilesystemName(name1);
 	File file = null;
 	FileInputStream fis = null;
+	
 	if(name != null){
 		file = new File(path + "/" + name);
 		fis = new FileInputStream(file);

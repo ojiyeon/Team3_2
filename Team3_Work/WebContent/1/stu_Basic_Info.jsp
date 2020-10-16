@@ -61,9 +61,9 @@ section {
 							
 						<tr>
 							<td align="center" class="menu">생년월일</td>
-							<td colspan="3"><%=stu_b.getStu_jumin().toString().substring(0, 2)%>년
-											<%=stu_b.getStu_jumin().toString().substring(2, 4)%>월
-											<%=stu_b.getStu_jumin().toString().substring(4, 6)%>일
+							<td colspan="3"><%=stu_b.getStu_jumin().substring(0, 2)%>년
+											<%=stu_b.getStu_jumin().substring(2, 4)%>월
+											<%=stu_b.getStu_jumin().substring(4, 6)%>일
 							</td>
 						</tr>
 

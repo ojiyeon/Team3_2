@@ -3,9 +3,11 @@ package timetable;
 public class TimeTableBean {
 	private String subj_name;
 	private String subj_room;
+	
 	private String subj_day1;
 	private int subj_stime1;
 	private int subj_etime1;
+	
 	private String subj_day2;
 	private int subj_stime2;
 	private int subj_etime2;

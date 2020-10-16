@@ -42,11 +42,8 @@
 		
 		
 		MultipartRequest multi = new MultipartRequest(request,realpath,size,"utf-8",new DefaultFileRenamePolicy());
-		
-		
-	//	File file = new File(path+file.pathSeparator+filename);
-		
-		int b;
+		 		
+ 		int b;
 		while((b=fis.read()) != -1){
 			
 		}

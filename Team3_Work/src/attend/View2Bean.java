@@ -4,6 +4,7 @@ public class View2Bean {
 	private int stu_id;
 	private int sc_grade;
 	private int sc_semester;
+	//이수구분: 전공필수, 전공선택 , 교양
 	private String subj_state;
 	private String subj_name;
 	private int subj_hakjum;

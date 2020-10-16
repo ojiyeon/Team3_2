@@ -28,8 +28,10 @@
 			<th width="131">금</th>
 		</tr>
 		<%
+			//1~11교시
 			for (int k = 1; k <= 11; k++) {
 			out.println("<tr><td height='50'>" + k + "</td>");
+			//월~금
 			for (int j = 1; j <= 5; j++) {
 				out.println("<td style='margin-bottom= 10px;'>");
 				for (int i = 0; i < time.size(); i++) {

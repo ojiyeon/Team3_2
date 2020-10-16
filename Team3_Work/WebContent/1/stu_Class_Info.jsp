@@ -59,18 +59,20 @@ function show(){ //나의 시간표 탭 눌렀을 때
     $.ajax({
         type:"POST",
         url:"stu_TimeTable_Tab1.jsp",
-        data : {id : <%=id%>},  //session id 값 보내기 
+      	//session id 값 보내기
+        data : {id : <%=id%>},   
         success: function(result){
             var tableData = document.getElementById("result");
-           	tableData.innerHTML = result; //id="result"에 시간표 정보 받아와서 넣기 
+            //id="result"에 시간표 정보 받아와서 넣기
+           	tableData.innerHTML = result; 
         },
         error: function(xhr, status, error) {
             alert(error);
         }  
     });
 };
-
-$("#getAttend").click(function(){// 나의 출석 탭 눌렀을 때
+//나의 출석 탭 눌렀을 때
+$("#getAttend").click(function(){
     $.ajax({
         type:"POST",
         url:"stu_Attend_Tab2.jsp",
@@ -98,14 +100,20 @@ function getClassInfo(id){ //stu_Attend_Tab2.jsp에서 조회버튼 클릭시 메소드
 	        	//tab2파일 id="resultClass" 밑에 class_search.jsp정보 넣기
 	            var tableData = document.getElementById("resultClass");
 	           	tableData.innerHTML = result;
+	           	
+	           	//다른학기 조회하려고 조회 버튼 다시 누르면 이전 출결조회 사라짐
+	           	var resetAtd = document.getElementById("resultAttend");
+	           	resetAtd.innerHTML = "";
 	        },
 	        error: function(xhr, status, error) {
 	            alert(error);
 	        }  
 	    });
+	 
 }
 
-function attend(stu_id, subj_code){ //class_search.jsp에서 해당 과목 클릭했을 때 메소드
+//class_search.jsp에서 해당 과목 클릭했을 때 메소드
+function attend(stu_id, subj_code){ 
 	var grade2 = $("select[name=sc_grade]").val();
 	var semester2 = $("select[name=sc_semester]").val();
 
@@ -122,13 +130,9 @@ function attend(stu_id, subj_code){ //class_search.jsp에서 해당 과목 클릭했을 때
 	            alert(error);
 	        }  
 	    });
-}
-
-	
-
+	 
+} 
 </script>
-	
 	<jsp:include page="../main/footer.jsp"></jsp:include>
-	
 </body>
 </html>

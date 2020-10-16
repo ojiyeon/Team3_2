@@ -19,7 +19,6 @@
 	ArrayList<ScheduleBean> viewlist = null;
 
 	int year = Integer.parseInt(request.getParameter("year"));
-	/* System.out.println(year); */
 	viewlist = student.ScheduleView(false, year);
 
 	%>

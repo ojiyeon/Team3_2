@@ -30,11 +30,11 @@
 	</div>
 	
 	<div style="float: left; margin: 25px 10px 25px 100px;" id="resultClass">
-				<!-- 자신이 들었던 수강과목 정보 테이블 결과를 받음  -->
+				<!-- 자신이 들었던 class_search 결과를 div안에 넣음 -->
 	</div>
 
 	<div class="cont2 cont_1" style="float: right; margin: 25px 100px 25px 10px;" id="resultAttend">
-			<!-- 자신이 들었던 수강과목 정보 테이블에 해당 행 클릭시  보여줄 출석 테이블의 결과-->
+			<!-- 자신이 들었던 수강과목 테이블에서 해당 과목 행 클릭시  보여줄 attend_search의 결과를 div안에 넣음 -->
 	</div>
 </body>
 </html>
