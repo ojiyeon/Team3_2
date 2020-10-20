@@ -7,6 +7,7 @@
 <meta charset="EUC-KR">
 <title>Univ_Scheduel</title>
 <link rel="stylesheet" href="../css/schedule.css" type="text/css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <style>
 	.pdate1{
 		color:#9f2c00;
