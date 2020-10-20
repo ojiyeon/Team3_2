@@ -203,27 +203,35 @@
                   String cmt_content = "";
                   String cmt_date = "";
    
+                  int cmt_comm_index = comm_index;
+                  int cmt_index = 0;
                   int cmt_num = 0;
                   int cmt_stu_id = 0;
-                  int cmt_index = 0;
+                  int cmt_level = 0;
+                  int cmt_step = 0;
+                  int cmt_ref = 1;
+                  
    
             %>
             
             <!-- 댓글 입력 창 -->
             <div class="table">
                <table class="table table-bordered" cellpadding="10" cellspacing="5" width="800" height="auto" align="center">
-                  <form action="comm_Comment_Ok.jsp?comm_index=<%=comm_index%>&cmt_content=<%=cmt_content%>">
-                     <input type="hidden" name="comm_index" value="<%=comm_index%>">
+                  <form action="comm_Comment_Ok.jsp?comm_index=<%=cmt_comm_index%>&cmt_content=<%=cmt_content%>">
+                  	<input type="hidden" name="comm_index" value="<%=cmt_comm_index%>">
+                  	<input type="hidden" name="cmt_index" value="<%=cmt_index%>">
+                  	<input type="hidden" name="result" value="2">
                      <tr height="30"></tr>
                      <tr>
                         <td>
                            <h3 align="left"><img src="../css/comment_icon.png" height="40"> &nbsp;댓글작성</h3> 
                            <p align="left"> [작성자] : <%=stu_name %></p>
-                           <textarea name="comment" cols="140" rows="4"></textarea>
-                           &nbsp;&nbsp;&nbsp;&nbsp; 
-                           <input type="submit" class="button" value="댓글입력" /> 
+                           <textarea name="comment" cols="120" rows="4"></textarea>
+                          <div class="mbutton">
+                           <input type="submit" class="button" value="댓글입력"/> 
                            &nbsp;&nbsp; 
                            <input type="reset" class="button" value="초기화" />
+                           </div>
                         </td>
                      </tr>
                   </form>
@@ -232,37 +240,60 @@
             
             <!-- 댓글 리스트 -->
             <div class="table">
-               <table class="table table-bordered" cellpadding="10" cellspacing="5" width="800" height="auto" align="center">
+               <table class="table table-bordered" cellpadding="10" cellspacing="5" width="800" height="auto">
                   <%
                      for (int i = 0; i < commentList.size(); i++) { // commnetList를 돌면서 값을 저장
                         comment = commentList.get(i);
                         cmt_index = comment.getCmt_index();
+                        cmt_comm_index = comment.getCmt_comm_index();
                         cmt_num = comment.getCmt_num();
                         cmt_writer = comment.getCmt_writer();
                         cmt_content = comment.getCmt_content();
                         cmt_date = comment.getDate2();
                         cmt_stu_id = comment.getCmt_stu_id();
+                        cmt_level = comment.getCmt_level();
                   %>
                   <tr class="off" onmouseover="this.className='on'" onmouseout="this.className='off'">
-                     <td width="50" id="id"><%=cmt_num%></td>
-                     <td width="80"><%=cmt_writer%></td>
-                     <td width="450" align="left"><%=cmt_content%></td>
+                     <td width="40" id="id" align="center"><%=cmt_num%></td>
+                     <td width="60"><%=cmt_writer%></td>
+                     <td width="540" align="left" >
+                     <%
+						// 답댓글일 경우
+						if(cmt_level > 0) {
+							for (int j = 0; j < cmt_level; j++) {
+					%>
+						&nbsp;&nbsp;&nbsp;
+					<%
+						}
+					%>
+						<img alt="답글이미지" src="../css/icon.gif" width="30" height="15">
+
+					<%
+					}
+					%>
+                     	<%=cmt_content%>
+                     </td>
 
                      <!-- 학번 값 비교하여 댓글 작성자만 삭제버튼 보임 -->
                      <%
                         if (cmt_stu_id == stu_id) {
                      %>
-                     <td width="120"><%=cmt_date%></td>
-                     <td width="70">
-                        <form method="post" action="comm_Comment_Delete_Ok.jsp?comm_index=<%=cmt_index%>&cmt_num=<%=cmt_num%>">
+                     <td width="120" align="center"><%=cmt_date%></td>
+                     <td width="40" align="center">
+                      <input type="button" class="button" value="답댓글" onclick="cmtReplyOpen(<%=cmt_comm_index%>,<%=cmt_index%>)"/><p>
+                        <form method="post" action="comm_Comment_Delete_Ok.jsp?comm_index=<%=cmt_comm_index%>&cmt_index=<%=cmt_index%>">
                            <input type="submit" class="button" value="댓글삭제" />
                         </form>
+                          
                      </td>
                      <%
                         } else {
                            // 댓글 작성자가 아닐경우 작성일만 출력
                      %>
-                     <td colspan="2"><%=cmt_date%></td>
+                     <td width="120" align="center"><%=cmt_date%></td>
+                     <td width="40" align="center">
+                           <input type="button" class="button" value="답댓글" onclick="cmtReplyOpen(<%=cmt_comm_index%>,<%=cmt_index %>) "/>
+                        </td>
                      <%
                         }
                      }
@@ -316,7 +347,13 @@
    <!-- footer -->
    <jsp:include page="../main/footer.jsp"></jsp:include>
 </body>
+<script>
+	function cmtReplyOpen(cmt_comm_index, cmt_index){
+		window.name = "comm_Show";
+		window.open("comm_Comment_Reply_Form.jsp?comm_index=" + cmt_comm_index + "&cmt_index=" + cmt_index, "comm_reply", "width=550, height=400, resizable = no, scrollbars = no");
+	};
 
+</script>
 <!-- 파일 다운로드를 위한 script -->
 <%-- <script type="text/javascript">
    // 영문파일은 그냥 다운로드 클릭시 정상작동하지만 한글파일명을 쿼리문으로 날릴경우 인코딩 문제가 발생할 수 있다. 

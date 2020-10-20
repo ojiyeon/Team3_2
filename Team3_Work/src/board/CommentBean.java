@@ -4,32 +4,43 @@ import java.sql.Timestamp;
 
 public class CommentBean {
 	
-	private int cmt_index; // °Ô½Ã±Û °íÀ¯¹øÈ£
-	private int cmt_num; // ´ñ±Û ¹øÈ£
-	private String cmt_writer; // ´ñ±Û ÀÛ¼ºÀÚ
-	private String cmt_content; // ´ñ±Û º»¹®
-	private Timestamp cmt_date; // ÀÛ¼ºÀÏ
+	private int cmt_index; // ê²Œì‹œê¸€ ê³ ìœ ë²ˆí˜¸
+	private int cmt_comm_index;
+	private int cmt_num; // ëŒ“ê¸€ ë²ˆí˜¸
+	private String cmt_writer; // ëŒ“ê¸€ ì‘ì„±ì
+	private String cmt_content; // ëŒ“ê¸€ ë³¸ë¬¸
+	private Timestamp cmt_date; // ì‘ì„±ì¼
 	private String date2;
-	private int cmt_stu_id; // ÇĞ¹ø
+	private int cmt_stu_id; // í•™ë²ˆ
+	private int cmt_step = 0; // ëŒ“ê¸€ ìœ„ì¹˜
+	private int cmt_level = 0; // ë‹µëŒ“ê¸€ ìˆœìœ„
+	private int cmt_ref = 0;
+
 	
 	public CommentBean() {}
 	
-	// ¸Å°³º¯¼ö ÀÖ´Â »ı¼ºÀÚ Ãß°¡
-	public CommentBean(int cmt_index, String cmt_writer, String cmt_content, Timestamp cmt_date,
-			int cmt_stu_id) {
-		this.cmt_index = cmt_index;
-		this.cmt_writer = cmt_writer;
-		this.cmt_content = cmt_content;
-		this.cmt_date = cmt_date;
-		this.cmt_stu_id = cmt_stu_id;
-	}
-
-	
+	/*
+	 * // ë§¤ê°œë³€ìˆ˜ ìˆëŠ” ìƒì„±ì ì¶”ê°€ public CommentBean(int cmt_index, String cmt_writer, String
+	 * cmt_content, Timestamp cmt_date, int cmt_stu_id) { this.cmt_index =
+	 * cmt_index; this.cmt_writer = cmt_writer; this.cmt_content = cmt_content;
+	 * this.cmt_date = cmt_date; this.cmt_stu_id = cmt_stu_id; }
+	 * 
+	 * 
+	 */
 	public int getCmt_index() {
 		return cmt_index;
 	}
 	public void setCmt_index(int cmt_index) {
 		this.cmt_index = cmt_index;
+	}
+
+	
+	public int getCmt_comm_index() {
+		return cmt_comm_index;
+	}
+
+	public void setCmt_comm_index(int cmt_comm_index) {
+		this.cmt_comm_index = cmt_comm_index;
 	}
 
 	public int getCmt_num() {
@@ -68,7 +79,32 @@ public class CommentBean {
 	public void setCmt_stu_id(int cmt_stu_id) {
 		this.cmt_stu_id = cmt_stu_id;
 	}
-	
+
+	public int getCmt_step() {
+		return cmt_step;
+	}
+
+	public void setCmt_step(int cmt_step) {
+		this.cmt_step = cmt_step;
+	}
+
+	public int getCmt_level() {
+		return cmt_level;
+	}
+
+	public void setCmt_level(int cmt_level) {
+		this.cmt_level = cmt_level;
+	}
+
+	public int getCmt_ref() {
+		return cmt_ref;
+	}
+
+	public void setCmt_ref(int cmt_ref) {
+		this.cmt_ref = cmt_ref;
+	}
+
+
 	
 	
 

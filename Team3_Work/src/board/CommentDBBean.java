@@ -13,13 +13,13 @@ import myUtil.HanConv;
 
 public class CommentDBBean {
 
-	private static CommentDBBean instance = new CommentDBBean(); // °´Ã¼ »ı¼º
+	private static CommentDBBean instance = new CommentDBBean(); // ê°ì²´ ìƒì„±
 
-	public static CommentDBBean getInstance() { // getInstance()È£Ãâ ½Ã CommentDBBeanÀ» ÂüÁ¶ÇÏ´Â °´Ã¼ ¸®ÅÏ
+	public static CommentDBBean getInstance() { // getInstance()í˜¸ì¶œ ì‹œ CommentDBBeanì„ ì°¸ì¡°í•˜ëŠ” ê°ì²´ ë¦¬í„´
 		return instance;
 	}
 
-	public Connection getConnection() throws Exception { // db ¿¬°áÇÏ´Â ¸Ş¼Òµå
+	public Connection getConnection() throws Exception { // db ì—°ê²°í•˜ëŠ” ë©”ì†Œë“œ
 
 		Context ctx = new InitialContext();
 		DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/oracle");
@@ -28,7 +28,7 @@ public class CommentDBBean {
 	}
 	
 
-	// ´ñ±Û ÀÔ·Â
+	// ëŒ“ê¸€ ì…ë ¥
 	public int insertComment(CommentBean comment) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -37,49 +37,99 @@ public class CommentDBBean {
 		String sql = "";
 		int num = 0;
 		int re = -1;
+		
+		
+		int cmt_num = comment.getCmt_num();
+		System.out.println("cmt_num : " + cmt_num);
+		
+		int step = comment.getCmt_step(); // ê¸€ ìœ„ì¹˜
+		int level = comment.getCmt_level(); // ë‹µë³€ ìˆœìœ„
+		int ref = comment.getCmt_ref(); // ì› ëŒ“ê¸€ ë²ˆí˜¸
+		
+		System.out.println("cmt_ref : " + ref);
+		int index = comment.getCmt_index();
+		int comm_index = comment.getCmt_comm_index();
 	
 
 		try {
 			con = getConnection();
-			
-			sql = "select max(cmt_num) from comments where cmt_index=?";
+			// ëŒ“ê¸€ ê³ ìœ  ì¸ë±ìŠ¤ë²ˆí˜¸ ê°€ì¥ í° ê°’ ê°€ì ¸ì™€ì„œ +1
+			sql = "select max(cmt_index) from comments";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, comment.getCmt_index());
-
 			rs = pstmt.executeQuery();
-
-			if (rs.next()) { // nullÀÌ ¾Æ´Ï¸é
-				num = rs.getInt(1) + 1; // ¿©±â¼­ (1)Àº ÄÃ·³ ÀÎµ¦½º
-
+			if (rs.next()) {
+				index = rs.getInt(1) + 1;
 			} else {
-				num = 1;
-				rs.getInt(2);
+				index = 1;
+				rs.getInt(1);
 			}
 			pstmt.close();
 			rs.close();
+			
+			
+			// ê²Œì‹œê¸€ì— í•´ë‹¹í•˜ëŠ” ëŒ“ê¸€ num ì£¼ê¸° : 0ì´ ì•„ë‹ˆë©´ ê°€ì¥ í° ê°’ ê°€ì ¸ì™€ì„œ +1
+			if(comm_index != 0) {
+				sql = "select max(cmt_num) from comments where cmt_comm_index=?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, comm_index);
+	
+				rs = pstmt.executeQuery();
+	
+				if (rs.next()) { // nullì´ ì•„ë‹ˆë©´
+					num = rs.getInt(1) + 1; // ì—¬ê¸°ì„œ (1)ì€ ì»¬ëŸ¼ ì¸ë±ìŠ¤
+	
+				} else {
+					num = 1;
+					rs.getInt(1);
+				}
+				pstmt.close();
+				rs.close();
+			}
 
+			// ë§Œì•½ ëŒ“ê¸€ ë²ˆí˜¸ê°€ 0ì´ ì•„ë‹ˆë©´
+			if (cmt_num != 0) {
+				sql = "update comments set cmt_step = cmt_step+1 where cmt_ref=? and cmt_step > ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, ref);
+				pstmt.setInt(2, step);
+				pstmt.executeUpdate();
 
-			// À§¿¡¼­ ½ÇÇàÇÑ Äõ¸® Áß, ´ñ±Û¹øÈ£ °¡Àå Å« °ª¿¡ +1 ´õÇÑ °ªÀ» Æ÷ÇÔÇÏ¿© ¸ğµç ÀÔ·Â °ª ÀúÀå
-			sql = "insert into comments (cmt_index, cmt_num, cmt_writer, cmt_content, cmt_date, cmt_stu_id) values (?, ?, ?, ?, ?, ?)";
+				step += 1;
+				level += 1;
+							
+			} else {
+				ref = index;
+				step = 0;
+				level = 0;
+				System.out.println("ref:" + ref);
+			}
+			
+			
+			// ìœ„ì—ì„œ ì‹¤í–‰í•œ ì¿¼ë¦¬ ì¤‘, ëŒ“ê¸€ë²ˆí˜¸ ê°€ì¥ í° ê°’ì— +1 ë”í•œ ê°’ì„ í¬í•¨í•˜ì—¬ ëª¨ë“  ì…ë ¥ ê°’ ì €ì¥
+			sql = "insert into comments (cmt_index, cmt_comm_index, cmt_num, cmt_writer, cmt_content, cmt_date, cmt_stu_id, cmt_step, cmt_level, cmt_ref) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 			pstmt = con.prepareStatement(sql);
-
-			pstmt.setInt(1, comment.getCmt_index());
-			pstmt.setInt(2, num);
-			pstmt.setString(3, comment.getCmt_writer());
-			pstmt.setString(4, comment.getCmt_content());
-			pstmt.setTimestamp(5, comment.getCmt_date());
-			pstmt.setInt(6, comment.getCmt_stu_id());
+			
+			pstmt.setInt(1, index);
+			pstmt.setInt(2, comm_index);
+			pstmt.setInt(3, num);
+			pstmt.setString(4, comment.getCmt_writer());
+			pstmt.setString(5, comment.getCmt_content());
+			pstmt.setTimestamp(6, comment.getCmt_date());
+			pstmt.setInt(7, comment.getCmt_stu_id());
+			pstmt.setInt(8, step);
+			pstmt.setInt(9, level);
+			pstmt.setInt(10, ref);
+			
 
 			re = pstmt.executeUpdate();
 
 			pstmt.close();
 
-			System.out.println(re);
-			System.out.println("Ãß°¡ ¼º°ø");
+			System.out.println("ì¶”ê°€ ì„±ê³µ");
 
 		} catch (Exception e) {
-			System.out.println("Ãß°¡ ½ÇÆĞ");
+			System.out.println("ì¶”ê°€ ì‹¤íŒ¨");
 			e.printStackTrace();
 		} finally {
 			try {
@@ -99,8 +149,8 @@ public class CommentDBBean {
 		return re;
 	}
 
-	// °Ô½Ã¹° ¹øÈ£¿¡ ÇØ´çÇÏ´Â ´ñ±Û Ãâ·Â
-	public ArrayList<CommentBean> getListComment(int cmt_index) { // Á¦³×¸¯Àº ÆÄÀÏÆÄ¶ó¹ÌÅÍ ¶ó°íµµ ÇÔ
+	// ê²Œì‹œë¬¼ ë²ˆí˜¸ì— í•´ë‹¹í•˜ëŠ” ëŒ“ê¸€ ì¶œë ¥
+	public ArrayList<CommentBean> getListComment(int cmt_comm_index) { // ì œë„¤ë¦­ì€ íŒŒì¼íŒŒë¼ë¯¸í„° ë¼ê³ ë„ í•¨
 
 			Connection con = null;
 			PreparedStatement pstmt = null;
@@ -113,10 +163,9 @@ public class CommentDBBean {
 			try {
 				con = getConnection();
 
-
-				sql = "select * from (select a.*, to_char(cmt_date,'YYYY-MM-DD hh24:mi') date2 from comments a order by cmt_num) where cmt_index=?";
+				sql = "select * from (select a.*, to_char(cmt_date,'YYYY-MM-DD hh24:mi') date2 from comments a order by cmt_ref asc, cmt_step asc) where cmt_comm_index=?";
 				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, cmt_index);
+				pstmt.setInt(1, cmt_comm_index);
 				
 			
 				rs = pstmt.executeQuery();
@@ -126,12 +175,16 @@ public class CommentDBBean {
 					CommentBean comment = new CommentBean();
 					
 					comment.setCmt_index(rs.getInt(1));
-					comment.setCmt_num(rs.getInt(2));
-					comment.setCmt_writer(rs.getString(3));
-					comment.setCmt_content(rs.getString(4));
-					comment.setCmt_date(rs.getTimestamp(5));
-					comment.setCmt_stu_id(rs.getInt(6));
-					comment.setDate2(rs.getString(7));
+					comment.setCmt_comm_index(rs.getInt(2));
+					comment.setCmt_num(rs.getInt(3));
+					comment.setCmt_writer(rs.getString(4));
+					comment.setCmt_content(rs.getString(5));
+					comment.setCmt_date(rs.getTimestamp(6));
+					comment.setCmt_stu_id(rs.getInt(7));
+					comment.setCmt_step(rs.getInt(8));
+					comment.setCmt_level(rs.getInt(9));
+					comment.setCmt_ref(rs.getInt(10));
+					comment.setDate2(rs.getString(11));
 					
 					commentList.add(comment);
 					
@@ -140,7 +193,7 @@ public class CommentDBBean {
 
 			} catch (Exception e) {
 				e.printStackTrace();
-				System.out.println("Á¶È¸ ¼º°ø");
+				System.out.println("ì¡°íšŒ ì„±ê³µ");
 			} finally {
 				try {
 					if (rs != null) {
@@ -159,8 +212,70 @@ public class CommentDBBean {
 			return commentList;
 		}
 	
-	// ´ñ±Û °³¼ö Ãâ·Â
-	public int getCountComment(int cmt_index) {
+	// ëŒ“ê¸€ í•œê°œ ì •ë³´ ê°€ì ¸ì˜¤ê¸°(ë‹µëŒ“ê¸€ì„ ìœ„í•¨)
+	public CommentBean getComment(int cmt_index) { // true ë©´ ì¡°íšŒìˆ˜ ì˜¬ë¦¬ê³ , false ë©´ ì¡°íšŒìˆ˜ ê·¸ëŒ€ë¡œ
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		String sql = "";
+		CommentBean comment = null;
+
+		try {
+			con = getConnection();
+
+			/*
+			 * if (hitadd == true) { // ì¡°íšŒìˆ˜ 1ì˜¬ë¦¬ê¸° sql =
+			 * "update community set comm_hits = comm_hits+1 where comm_index=?"; pstmt =
+			 * con.prepareStatement(sql); pstmt.setInt(1, cmt_index); pstmt.executeUpdate();
+			 * pstmt.close(); }
+			 */
+			sql = "select * from (select a.*, to_char(cmt_date,'YYYY-MM-DD hh24:mi') date2 from comments a order by cmt_num) where cmt_index=? order by cmt_ref desc, cmt_step asc";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, cmt_index);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				comment = new CommentBean();
+				comment.setCmt_index(rs.getInt(1));
+				comment.setCmt_comm_index(rs.getInt(2));
+				comment.setCmt_num(rs.getInt(3));
+				comment.setCmt_writer(rs.getString(4));
+				comment.setCmt_content(rs.getString(5));
+				comment.setCmt_date(rs.getTimestamp(6));
+				comment.setCmt_stu_id(rs.getInt(7));
+				comment.setCmt_step(rs.getInt(8));
+				comment.setCmt_level(rs.getInt(9));
+				comment.setCmt_ref(rs.getInt(10));
+				comment.setDate2(rs.getString(11));
+				
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("ì¶œë ¥ ì‹¤íŒ¨");
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return comment;
+	}
+	
+	
+	// ëŒ“ê¸€ ê°œìˆ˜ ì¶œë ¥
+	public int getCountComment(int cmt_comm_index) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -169,10 +284,10 @@ public class CommentDBBean {
 		
 		try {
 			con = getConnection();
-			sql = "select count(*) from comments where cmt_index=?";
+			sql = "select count(*) from comments where cmt_comm_index=?";
 			
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, cmt_index);
+			pstmt.setInt(1, cmt_comm_index);
 			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
@@ -201,11 +316,11 @@ public class CommentDBBean {
 	}
 	
 	
-	// ´ñ±Û ±Û »èÁ¦
-		public int deleteComment(int cmt_index, int cmt_num) {
+	// ëŒ“ê¸€ ê¸€ ì‚­ì œ
+		public int deleteComment(int cmt_index) {
 			Connection con = null;
-			PreparedStatement pstmt = null; // Äõ¸®»ç¿ë
-			ResultSet rs = null; // °á°ú°ª
+			PreparedStatement pstmt = null; // ì¿¼ë¦¬ì‚¬ìš©
+			ResultSet rs = null; // ê²°ê³¼ê°’
 
 			String sql = "";
 			
@@ -215,17 +330,17 @@ public class CommentDBBean {
 				con = getConnection();
 				
 			
-				sql = "delete comments where cmt_index=? and cmt_num=?";
+				sql = "delete comments where cmt_index=? or cmt_ref=?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setInt(1, cmt_index);
-				pstmt.setInt(2, cmt_num);
+				pstmt.setInt(2, cmt_index);
 					
 				re = pstmt.executeUpdate();
 				
 
 			} catch (Exception e) {
 				e.printStackTrace();
-				System.out.println("»èÁ¦ ½ÇÆĞ");
+				System.out.println("ì‚­ì œ ì‹¤íŒ¨");
 				
 			} finally {
 				try {
