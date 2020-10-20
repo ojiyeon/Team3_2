@@ -1,3 +1,4 @@
+<%@page import="javax.swing.plaf.metal.MetalIconFactory.FolderIcon16"%>
 <%@page import="sun.invoke.empty.Empty"%>
 <%@page import="com.oreilly.servlet.MultipartRequest"%>
 <%@page import="java.util.Date"%>
@@ -89,14 +90,24 @@
 	        		  comm_level = Integer.parseInt(item.getString());	        		  
 	        	  }
 	          }else {
-	        	 String time = Long.toString(date.getTime());
-	             String itemName = item.getName();
-	             if(itemName.length() != 0){
-	            	 comm_originFileName += itemName + ",";
-	            	 comm_systemFileName += time + "_" + itemName + ",";
-	             	File savedFile = new File(uploadPath + "/" + time + "_" +itemName);
-	             	item.write(savedFile);	
-	             }
+	        	  if(item.getFieldName().equals("uploads")){
+	        	 	String time = Long.toString(date.getTime());
+	             	String itemName = item.getName();
+	             	if(itemName.length() != 0){
+	            	 	comm_originFileName += itemName + ",";
+	            	 	comm_systemFileName += time + "_" + itemName + ",";
+	             		File savedFile = new File(uploadPath + "/" + time + "_" +itemName);
+	             		File Folder = new File("c:\\upload");
+	             		if(!Folder.exists()){
+	             			try{
+	             				Folder.mkdir(); // 폴더 생성
+	             			}catch(Exception e){
+	             				e.getStackTrace();
+	             			}
+	             		}
+	             		item.write(savedFile);	
+	            	 }
+	         	 }
 	          }
 	     }
 		
