@@ -12,8 +12,12 @@
    int commindex = Integer.parseInt(request.getParameter("comm_index")); 
    
    // 있던 페이지로 돌아갈 수 있도록 pageNUM 받아옴
-   String pageNUM = request.getParameter("pageNUM");
-   System.out.println("pageNUM >> " + pageNUM);
+   String pageNUMF = request.getParameter("pageNUMF");
+   String pageNUMQ = request.getParameter("pageNUMQ");
+   String pageNUMN = request.getParameter("pageNUMN");
+   System.out.println("pageNUMF >> " + pageNUMF);
+   System.out.println("pageNUMQ >> " + pageNUMQ);
+   System.out.println("pageNUMN >> " + pageNUMN);
 
    // 세션정보 받아와서 id에 저장
    int id = (Integer) session.getAttribute("uid"); 
@@ -310,19 +314,27 @@
                <%
                   String forwardFile = "";
                   if(comm_groupn == 1){
-                     forwardFile = "location.href='comm_Freeboard.jsp?pageNUM=" + pageNUM + "';";
+                     forwardFile = "location.href='comm_Freeboard.jsp?pageNUMF=" + pageNUMF + "';";
                   }else if(comm_groupn == 2 || comm_groupn == 3){
-                     forwardFile = "location.href='comm_Q_And_A.jsp?pageNUM=" + pageNUM + "';";                     
+                     forwardFile = "location.href='comm_Q_And_A.jsp?pageNUMQ=" + pageNUMQ + "';";                     
                   }else{
-                     forwardFile = "location.href='../2/stu_Notice.jsp?pageNUM=" + pageNUM + "';";                     
+                     forwardFile = "location.href='../2/stu_Notice.jsp?pageNUMN=" + pageNUMN + "';";                     
                   }
                %>
             
             <%
             if (stu_id == comm_stu_id) {
-            %>
+            	if(pageNUMF != null){
+            %>	
                <!-- 세션에서 받아온 학번과 작성자 학번의 값이 같으면 수정, 삭제 버튼이 보이도록 -->
-               <input type="button" class="button" value="수정" onclick="location.href='comm_Modify.jsp?comm_index=<%=comm_index%>&comm_groupn=<%=comm_groupn%>&pageNUM=<%=pageNUM %>';" /> 
+               <input type="button" class="button" value="수정" onclick="location.href='comm_Modify.jsp?comm_index=<%=comm_index%>&comm_groupn=<%=comm_groupn%>&pageNUM=<%=pageNUMF %>';" /> 
+            <%
+            	}else if(pageNUMQ != null){ 
+           %>
+               <input type="button" class="button" value="수정" onclick="location.href='comm_Modify.jsp?comm_index=<%=comm_index%>&comm_groupn=<%=comm_groupn%>&pageNUM=<%=pageNUMQ %>';" /> 
+            <%
+            	}
+       		%>
                &nbsp;&nbsp; 
                <input type="button" class="button" value="삭제" onclick="location.href='comm_Delete.jsp?comm_index=<%=comm_index%>';"/> 
                &nbsp;&nbsp; 

@@ -151,7 +151,7 @@ footer {
 									<%
 										}
 									%>
-										<a href="comm_Show.jsp?comm_index=<%=comm_index%>&pageNUM=<%=pageNUM%>">&nbsp;<%=comm_title%></a>
+										<a href="comm_Show.jsp?comm_index=<%=comm_index%>&pageNUMQ=<%=pageNUM%>">&nbsp;<%=comm_title%></a>
 									<%
 									if(count != 0){
 									%>

@@ -113,7 +113,7 @@ footer {
                      <tr class="off" onmouseover="this.className='on'" onmouseout="this.className='off'">
                         <td align="center"><%=comm_num%></td>
                         <td width="500" align="left">
-                           <a href="../3/comm_Show.jsp?comm_index=<%=comm_index%>&pageNUM=<%=pageNUM%>">&nbsp;<%=comm_title%></a>
+                           <a href="../3/comm_Show.jsp?comm_index=<%=comm_index%>&pageNUMN=<%=pageNUM%>">&nbsp;<%=comm_title%></a>
                            
                            
                            
